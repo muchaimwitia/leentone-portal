@@ -101,7 +101,7 @@ export default function InvestmentPortal() {
                 </h1>
                 <p className="text-[13px] md:text-[15px] text-[#94A3B8] max-w-[700px] leading-[1.7] font-light mb-[32px]">
                   Purchasing a built property — apartment, penthouse, or villa — involves distinct legal, structural, and management due diligence steps beyond a standard title search. Every step below Leentone applies to Kenya's residential real estate market investments.
-                </p>git init
+                </p>
               </div>
 
               {/* TIGHTER FOCUS-BLUR INDEX */}
