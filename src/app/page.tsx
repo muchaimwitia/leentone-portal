@@ -8,6 +8,7 @@ import MagneticButton from '@/components/luxury/MagneticButton';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Property, PurchaseMode } from '@/types/investment';
 import Image from 'next/image';
+import LiveTicker from '@/components/luxury/LiveTicker';
 
 const PROPS: Property[] = [
   { id: 'p1', name: 'The Westlands Sky Residence', loc: 'Westlands, Nairobi', kes: 65e6, seg: 'pent', beds: 4, baths: 4, sqm: 420, v: true, ref: 'NRB-WL-0871', off: false, feats: ['Full-floor layout', 'Smart home', '4 parking bays'], em: '', g: '#121A2F, #1E293B' },
@@ -127,14 +128,14 @@ export default function InvestmentPortal() {
                     transition={{ duration: 1, delay: 0.5 }}
                   >
                     <p className="font-mono text-[10px] tracking-[0.5em] uppercase text-[#B89B5E] mb-[24px]">
-                      Private Institutional Access
+                      Private Institutional Path
                     </p>
                     <h1 className="font-serif text-[clamp(40px,6vw,84px)] font-light leading-[1.1] text-[#FDFBF7] tracking-[-0.02em] mb-[32px]">
-                      Real Estate Acquisition: <br/>
-                      <span className="italic text-[#94A3B8] opacity-80">The Institutional Path.</span>
+                      Luxury Real Estate Acquisition <br/>
+                      <span className="italic text-[#94A3B8] opacity-80"></span>
                     </h1>
                     <p className="text-[14px] md:text-[16px] text-[#94A3B8] max-w-[750px] mx-auto leading-[1.8] font-light">
-                      Purchasing a built property — apartment, penthouse, or villa — involves distinct legal, structural, and management due diligence steps beyond a standard title search.
+                      Purchasing a built or off-plan property — apartment, penthouse, or villa — involves distinct legal, structural, and management due diligence steps beyond a standard title search.
                     </p>
                   </motion.div>
                 </div>
@@ -144,7 +145,7 @@ export default function InvestmentPortal() {
               {/* TIGHTER FOCUS-BLUR INDEX */}
               <div className="max-w-[1200px] mx-auto px-[24px] md:px-[40px] mb-[120px]">
                 <div className="mb-10 flex justify-between items-end border-b border-[#1E293B] pb-4">
-                  <h2 className="font-serif text-[24px] md:text-[32px] text-[#FDFBF7] font-light tracking-tight">The Acquisition Index</h2>
+                  <h2 className="font-serif text-[24px] md:text-[32px] text-[#FDFBF7] font-light tracking-tight">The  Legal Acquisition Process through Leentone</h2>
                   <p className="font-mono text-[9px] tracking-[0.3em] uppercase text-[#B89B5E] hidden md:block">08 Mandatory Steps</p>
                 </div>
                 
@@ -242,110 +243,141 @@ export default function InvestmentPortal() {
             </motion.section>
           )}
 
-          {/* STEP 2: PORTFOLIO */}
+        {/* STEP 2: THE PRIME COLLECTION (STRICT DUO-GRID) */}
           {step === 2 && (
-            <motion.section key="s2" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={luxuryTransition} className="max-w-[1400px] mx-auto px-[20px] md:px-[40px]">
-              <div className="text-center mb-[60px] md:mb-[80px]">
-                <p className="font-mono text-[9px] md:text-[10px] tracking-[0.5em] uppercase text-[#B89B5E] mb-[16px]">Step II — Selection</p>
-                <h2 className="font-serif text-[clamp(32px,4.5vw,56px)] font-light text-[#FDFBF7]">The Prime Collection</h2>
+            <motion.section 
+              key="s2" 
+              initial={{ opacity: 0, y: 20 }} 
+              animate={{ opacity: 1, y: 0 }} 
+              transition={luxuryTransition} 
+              className="max-w-[1200px] mx-auto px-[20px] md:px-[40px]"
+            >
+              <div className="text-center mb-[40px] md:mb-[60px]">
+                <p className="font-mono text-[9px] md:text-[10px] tracking-[0.5em] uppercase text-[#B89B5E] mb-[16px]">
+                  Step II — Selection
+                </p>
+                <h2 className="font-serif text-[clamp(32px,4vw,48px)] font-light text-[#FDFBF7]">
+                  The Prime Collection
+                </h2>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[24px] md:gap-[32px]">
+
+              {/* Locked to 2 columns on tablet/desktop for a more compact, justified feel */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-[24px] md:gap-[40px]">
                 {PROPS.filter(p => !p.off || (step as number) === 5).map(p => (
-                   <PropertyCard key={p.id} property={p} formatPrice={formatPrice} currency={currency} onSelect={(p) => { setSelectedProperty(p); goToStep(3); }} />
+                   <PropertyCard 
+                     key={p.id} 
+                     property={p} 
+                     formatPrice={formatPrice} 
+                     currency={currency} 
+                     onSelect={(p) => { 
+                       setSelectedProperty(p); 
+                       goToStep(3); 
+                       triggerHaptic(10);
+                     }} 
+                   />
                 ))}
               </div>
             </motion.section>
           )}
           
-          {/* STEP 3: ANALYSIS */}
+          {/* STEP 3: DYNAMIC FINANCIAL ANALYSIS */}
           {step === 3 && (
-             <motion.section key="s3" initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={luxuryTransition} className="max-w-[800px] mx-auto px-[24px] md:px-[28px]">
+             <motion.section 
+               key="s3" 
+               initial={{ opacity: 0, x: 20 }} 
+               animate={{ opacity: 1, x: 0 }} 
+               transition={luxuryTransition} 
+               className="max-w-[1000px] mx-auto px-[24px]"
+             >
                <div className="text-center mb-10">
-                 <p className="font-mono text-[9px] md:text-[10px] tracking-[0.3em] uppercase text-[#B89B5E] mb-[10px]">Step III — Analysis</p>
-                 <h2 className="font-serif text-[32px] md:text-[36px] font-light text-[#FDFBF7]">Financial Projections</h2>
-                 <p className="text-[13px] md:text-[14px] text-[#94A3B8] mt-3 italic font-serif tracking-wide">Analysing {selectedProperty?.name || "Premium Asset"}</p>
+                 <p className="font-mono text-[9px] tracking-[0.3em] uppercase text-[#B89B5E] mb-[10px]">Step III — Forensic Analysis</p>
+                 <h2 className="font-serif text-[32px] md:text-[42px] font-light text-[#FDFBF7]">Yield & Equity Projections</h2>
+                 <p className="text-[13px] text-[#94A3B8] mt-3 italic font-serif">Asset Ref: {selectedProperty?.ref || "Boutique Selection"}</p>
                </div>
                
-               <div className="flex gap-[4px] p-[4px] rounded-[14px] bg-[#121A2F] border border-[#1E293B] mb-6 max-w-[500px] mx-auto">
-                 <button onClick={() => {setMode('cash'); triggerHaptic(10);}} className={`flex-1 py-[12px] rounded-[10px] text-[10px] md:text-[11px] uppercase tracking-widest transition-all ${mode === 'cash' ? 'bg-[#FDFBF7] text-[#080D19] font-bold shadow-sm' : 'text-[#94A3B8]'}`}>Cash Purchase</button>
-                 <button onClick={() => {setMode('mortgage'); triggerHaptic(10);}} className={`flex-1 py-[12px] rounded-[10px] text-[10px] md:text-[11px] uppercase tracking-widest transition-all ${mode === 'mortgage' ? 'bg-[#FDFBF7] text-[#080D19] font-bold shadow-sm' : 'text-[#94A3B8]'}`}>Mortgage (Leverage)</button>
-               </div>
-
-               <div className="flex gap-[4px] p-[4px] rounded-[10px] bg-[#121A2F] border border-[#1E293B] mb-8 max-w-[300px] mx-auto">
-                 {[5, 10, 15].map(yr => (
-                   <button 
-                     key={yr} 
-                     onClick={() => {setHorizon(yr as 5|10|15); triggerHaptic(8);}} 
-                     className={`flex-1 py-[8px] rounded-[8px] text-[9px] uppercase tracking-widest transition-all ${horizon === yr ? 'bg-[#1E293B] text-[#FDFBF7] font-bold shadow-sm' : 'text-[#94A3B8]'}`}
-                   >
-                     {yr} YR
-                   </button>
-                 ))}
-               </div>
-
-               <div className="bg-[#121A2F] border border-[#1E293B] rounded-[2px] luxury-shadow mb-8 overflow-hidden">
-                 <div className="p-6 md:p-8 border-b border-[#1E293B]">
-                   <div className="flex justify-between items-end mb-6">
-                     <div>
-                       <p className="font-mono text-[8px] tracking-[0.2em] text-[#94A3B8] uppercase mb-1">{horizon}-Year Equity Projection</p>
-                       <p className="font-serif text-[18px] md:text-[24px] text-[#FDFBF7]">{mode === 'cash' ? 'Linear Yield Growth' : 'Leveraged Appreciation'}</p>
-                     </div>
-                     <div className="text-right">
-                       <p className="font-mono text-[8px] tracking-[0.2em] text-[#94A3B8] uppercase mb-1">Est. Net ROI</p>
-                       <p className="font-serif text-[18px] md:text-[24px] text-[#B89B5E]">{mode === 'cash' ? '9.2% p.a.' : '18.4% p.a.'}</p>
-                     </div>
-                   </div>
-                   
-                   <div className="relative h-[150px] md:h-[180px] w-full border-b border-l border-[#1E293B] pt-4">
-                     <div className="absolute -left-2 top-0 text-[8px] font-mono text-[#94A3B8] -translate-x-full">High</div>
-                     <div className="absolute -left-2 bottom-0 text-[8px] font-mono text-[#94A3B8] -translate-x-full">Low</div>
-                     <svg viewBox="0 0 500 180" preserveAspectRatio="none" className="w-full h-full overflow-visible">
-                       <line x1="0" y1="45" x2="500" y2="45" stroke="#1E293B" strokeWidth="1" strokeDasharray="4 4" />
-                       <line x1="0" y1="90" x2="500" y2="90" stroke="#1E293B" strokeWidth="1" strokeDasharray="4 4" />
-                       <line x1="0" y1="135" x2="500" y2="135" stroke="#1E293B" strokeWidth="1" strokeDasharray="4 4" />
-                       
-                       <motion.path d={mode === 'cash' ? activeChart.cash : activeChart.mort} fill="none" stroke="#B89B5E" strokeWidth="3" initial={{ pathLength: 0 }} animate={{ pathLength: 1, d: mode === 'cash' ? activeChart.cash : activeChart.mort }} transition={{ duration: 1.2, ease: "easeInOut" }} />
-                       <motion.circle initial={false} animate={{ cx: 500, cy: mode === 'cash' ? activeChart.cEnd : activeChart.mEnd }} r="4" fill="#FDFBF7" stroke="#B89B5E" strokeWidth="2" transition={{ duration: 1.2, ease: "easeInOut" }} />
-                     </svg>
-                     <div className="flex justify-between mt-2 text-[8px] font-mono text-[#94A3B8]">
-                       <span>Year 1</span><span>Year {Math.ceil(horizon/2)}</span><span>Year {horizon}</span>
-                     </div>
-                   </div>
-                 </div>
-
-                 <div className="p-6 md:p-8 bg-[#080D19]">
-                   {mode === 'cash' ? (
-                     <div className="space-y-4">
-                       <div className="flex justify-between py-2 border-b border-[#1E293B] font-serif text-[16px] md:text-[18px]"><span>Net Annual Yield</span><span className="text-[#B89B5E]">9.2%</span></div>
-                       <div className="flex justify-between py-2 border-b border-[#1E293B] font-serif text-[16px] md:text-[18px]"><span>Projected Annual Income</span><span>{formatPrice((selectedProperty?.kes || 65e6) * 0.092)}</span></div>
-                       <p className="text-[11px] md:text-[12px] text-[#94A3B8] leading-[1.8] pt-2 font-light italic">"Cash acquisitions in Nairobi maximize recurring income by eliminating 15% debt servicing costs."</p>
-                     </div>
-                   ) : (
-                     <div className="space-y-4">
-                       <div className="flex justify-between py-2 border-b border-[#1E293B] font-serif text-[16px] md:text-[18px]"><span>Reference Rate</span><span className="text-[#8A2525]">15.0%</span></div>
-                       <div className="flex justify-between py-2 border-b border-[#1E293B] font-serif text-[16px] md:text-[18px]"><span>Equity Required (30%)</span><span>{formatPrice((selectedProperty?.kes || 65e6) * 0.3)}</span></div>
-                       <p className="text-[11px] md:text-[12px] text-[#94A3B8] leading-[1.8] pt-2 font-light italic">"Leverage amplifies long-term capital appreciation despite higher entry costs, resulting in exponential equity growth over the selected {horizon}-year cycle."</p>
-                     </div>
-                   )}
-                 </div>
-               </div>
-
-               <div className="mb-12">
+               {/* THE STRATEGY TOGGLE */}
+               <div className="grid grid-cols-2 gap-[2px] p-[2px] rounded-[2px] bg-[#1E293B] mb-8 max-w-[600px] mx-auto border border-[#1E293B]">
                  <button 
-                   onClick={handleDownload}
-                   disabled={dlState !== 'idle'}
-                   className={`w-full py-[16px] border border-[#1E293B] rounded-[2px] font-mono text-[9px] md:text-[10px] tracking-[0.2em] uppercase transition-all flex items-center justify-center gap-3 ${dlState === 'idle' ? 'bg-[#121A2F] text-[#FDFBF7] hover:bg-[#1E293B]' : 'bg-[#080D19] text-[#94A3B8]'}`}
+                   onClick={() => {setMode('cash'); triggerHaptic(10);}} 
+                   className={`py-[14px] text-[10px] uppercase tracking-widest transition-all ${mode === 'cash' ? 'bg-[#FDFBF7] text-[#080D19] font-bold' : 'text-[#94A3B8] hover:text-[#FDFBF7]'}`}
                  >
-                   {dlState === 'idle' && <>[ PDF ] Generate Investment Memorandum</>}
-                   {dlState === 'compiling' && <><span className="animate-spin font-serif text-[14px] leading-none">⚬</span> Compiling Financial Data...</>}
-                   {dlState === 'watermarking' && <>[ SECURE ] Applying Leentone Watermark...</>}
-                   {dlState === 'ready' && <><span className="text-[#1A6A45] font-serif text-[12px]">✓</span> Memorandum Saved to Device</>}
+                   Outright Cash
+                 </button>
+                 <button 
+                   onClick={() => {setMode('mortgage'); triggerHaptic(10);}} 
+                   className={`py-[14px] text-[10px] uppercase tracking-widest transition-all ${mode === 'mortgage' ? 'bg-[#FDFBF7] text-[#080D19] font-bold' : 'text-[#94A3B8] hover:text-[#FDFBF7]'}`}
+                 >
+                   Debt Leverage
                  </button>
                </div>
 
-               <div className="flex flex-col md:flex-row justify-between items-center gap-4 border-t border-[#1E293B] pt-8">
-                 <button onClick={() => goToStep(2)} className="font-mono text-[10px] tracking-widest uppercase text-[#94A3B8] hover:text-[#B89B5E]">← Back to Collection</button>
-                 <button onClick={() => goToStep(4)} className="w-full md:w-auto px-10 py-4 bg-[#B89B5E] text-[#080D19] rounded-[2px] font-mono text-[10px] tracking-widest uppercase shadow-lg hover:bg-[#FDFBF7] transition-colors">Inquire Access</button>
+               <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+                 
+                 {/* LEFT: TIME HORIZON & STATS */}
+                 <div className="space-y-6">
+                    <div className="bg-[#121A2F] border border-[#1E293B] p-6 rounded-[2px]">
+                      <span className="font-mono text-[8px] text-[#B89B5E] uppercase tracking-widest block mb-4">Investment Cycle</span>
+                      <div className="flex gap-2">
+                        {[5, 10, 15].map(yr => (
+                          <button 
+                            key={yr} 
+                            onClick={() => {setHorizon(yr as 5|10|15); triggerHaptic(8);}} 
+                            className={`flex-1 py-3 border transition-all text-[10px] font-mono ${horizon === yr ? 'bg-[#B89B5E] border-[#B89B5E] text-[#080D19]' : 'border-[#1E293B] text-[#94A3B8] hover:border-[#B89B5E]'}`}
+                          >
+                            {yr}Y
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="bg-[#121A2F] border border-[#1E293B] p-6 rounded-[2px] space-y-4">
+                      <div className="flex justify-between items-end border-b border-[#1E293B] pb-3">
+                        <span className="font-mono text-[8px] text-[#94A3B8] uppercase">Net Yield</span>
+                        <span className="font-serif text-[20px] text-[#FDFBF7]">{mode === 'cash' ? '9.2%' : '18.4%'}</span>
+                      </div>
+                      <div className="flex justify-between items-end border-b border-[#1E293B] pb-3">
+                        <span className="font-mono text-[8px] text-[#94A3B8] uppercase">Capital Appr.</span>
+                        <span className="font-serif text-[20px] text-[#FDFBF7]">~7.5% <span className="text-[10px] text-[#94A3B8]">p.a.</span></span>
+                      </div>
+                    </div>
+                 </div>
+
+                 {/* CENTER/RIGHT: THE CHART */}
+                 <div className="lg:col-span-2 bg-[#121A2F] border border-[#1E293B] p-8 rounded-[2px] luxury-shadow">
+                    <div className="relative h-[250px] w-full border-b border-l border-[#1E293B] pt-4">
+                      <svg viewBox="0 0 500 200" preserveAspectRatio="none" className="w-full h-full overflow-visible">
+                        {/* Grid Lines */}
+                        {[0.25, 0.5, 0.75].map(v => <line key={v} x1="0" y1={200*v} x2="500" y2={200*v} stroke="#1E293B" strokeWidth="1" strokeDasharray="4 4" />)}
+                        
+                        <motion.path 
+                          d={mode === 'cash' ? activeChart.cash : activeChart.mort} 
+                          fill="none" stroke="#B89B5E" strokeWidth="3" 
+                          initial={{ pathLength: 0 }} 
+                          animate={{ pathLength: 1, d: mode === 'cash' ? activeChart.cash : activeChart.mort }} 
+                          transition={{ duration: 1.5, ease: "easeInOut" }} 
+                        />
+                      </svg>
+                      <div className="flex justify-between mt-4 text-[9px] font-mono text-[#94A3B8] uppercase tracking-widest">
+                        <span>Inception</span>
+                        <span>Maturity ({horizon} Years)</span>
+                      </div>
+                    </div>
+                    
+                    <div className="mt-10">
+                      <button 
+                        onClick={handleDownload}
+                        disabled={dlState !== 'idle'}
+                        className="w-full py-5 border border-[#B89B5E] text-[#B89B5E] font-mono text-[10px] tracking-[0.3em] uppercase hover:bg-[#B89B5E] hover:text-[#080D19] transition-all flex items-center justify-center gap-4"
+                      >
+                        {dlState === 'idle' ? '[ DOWNLOAD FORENSIC MEMORANDUM ]' : '[ COMPILING ENCRYPTED DATA... ]'}
+                      </button>
+                    </div>
+                 </div>
+               </div>
+
+               <div className="flex justify-between items-center mt-12 border-t border-[#1E293B] pt-8">
+                 <button onClick={() => goToStep(2)} className="font-mono text-[10px] text-[#94A3B8] uppercase tracking-widest hover:text-[#FDFBF7]">← Portfolio</button>
+                 <button onClick={() => goToStep(4)} className="px-12 py-4 bg-[#B89B5E] text-[#080D19] font-mono text-[10px] font-bold uppercase tracking-widest shadow-xl">Inquire Access</button>
                </div>
              </motion.section>
           )}
@@ -361,20 +393,55 @@ export default function InvestmentPortal() {
              </motion.section>
           )}
 
-          {/* STEP 5: PRIVATE INVENTORY */}
+         {/* STEP 5: PRIVATE INVENTORY (DECRYPTED VIEW) */}
           {step === 5 && (
-            <motion.section key="s5" className="max-w-[1400px] mx-auto px-[20px] md:px-[40px]">
-               <div className="text-center mb-[60px] md:mb-[80px]">
-                <p className="font-mono text-[9px] md:text-[10px] tracking-[0.5em] uppercase text-[#B89B5E] mb-[16px]">Step V — Intelligence</p>
-                <h2 className="font-serif text-[clamp(32px,4.5vw,56px)] font-light text-[#FDFBF7]">Off-Market Portfolio</h2>
+            <motion.section 
+              key="s5" 
+              initial={{ opacity: 0 }} 
+              animate={{ opacity: 1 }} 
+              className="max-w-[1400px] mx-auto px-[20px] md:px-[40px]"
+            >
+               <div className="text-center mb-[60px]">
+                <motion.div
+                  initial={{ width: 0 }}
+                  animate={{ width: "100%" }}
+                  transition={{ duration: 2, ease: "easeInOut" }}
+                  className="h-[1px] bg-[#B89B5E] mb-8 mx-auto max-w-[200px]"
+                />
+                <p className="font-mono text-[9px] tracking-[0.5em] uppercase text-[#B89B5E] mb-[16px]">
+                  Clearance Level: Principal
+                </p>
+                <h2 className="font-serif text-[42px] md:text-[64px] font-light text-[#FDFBF7] italic">
+                  Off-Market Portfolio
+                </h2>
+                <p className="text-[#94A3B8] font-mono text-[10px] mt-4 uppercase tracking-widest">
+                  [ End-to-End Encrypted Session ]
+                </p>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[24px] md:gap-[32px]">
-                {PROPS.filter(p => p.off).map(p => <PropertyCard key={p.id} property={p} formatPrice={formatPrice} currency={currency} onSelect={() => {}} />)}
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-[40px]">
+                {PROPS.filter(p => p.off).map((p, i) => (
+                  <motion.div
+                    key={p.id}
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: i * 0.2 }}
+                  >
+                    <PropertyCard 
+                      property={p} 
+                      formatPrice={formatPrice} 
+                      currency={currency} 
+                      onSelect={() => {}} 
+                    />
+                  </motion.div>
+                ))}
               </div>
             </motion.section>
           )}
         </AnimatePresence>
       </main>
+      {/* THE INSTITUTIONAL TERMINAL FINISH */}
+      <LiveTicker />
     </div>
   );
 }
