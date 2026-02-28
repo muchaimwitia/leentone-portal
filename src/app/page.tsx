@@ -104,7 +104,7 @@ export default function InvestmentPortal() {
                     animate={{ scale: 1 }}
                     transition={{ duration: 2, ease: "easeOut" }}
                     className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-60"
-                    style={{ backgroundImage: `url('/hero-skyline.jpg')` }}
+                    style={{ backgroundImage: `url('/public/hero-skyline.jpg')` }}
                   />
                   {/* The Gradient: Dark at top for the header, slightly transparent middle for the city, solid navy at bottom to blend into the page */}
                   <div className="absolute inset-0 bg-gradient-to-b from-[#080D19] via-[#080D19]/80 to-[#080D19]"></div>
