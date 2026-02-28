@@ -95,43 +95,50 @@ export default function InvestmentPortal() {
          {step === 1 && (
             <motion.section key="s1" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
               
-             {/* CINEMATIC HERO SECTION WITH SKYLINE (Visibility Fixed) */}
-              <div className="relative w-full min-h-[60vh] flex items-center justify-center pt-[60px] pb-[80px] mb-[80px] md:mb-[120px] -mt-[40px]">
+             {/* CINEMATIC HERO SECTION (FORCED STACKING) */}
+              <div className="relative w-full min-h-[70vh] flex items-center justify-center pt-[60px] pb-[80px] mb-[80px] md:mb-[120px] -mt-[40px] overflow-hidden bg-[#080D19]">
                 
-                {/* Background Image Container */}
-                <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none bg-[#080D19]">
+                {/* LAYER 1: THE IMAGE (The Base) */}
+                <div className="absolute inset-0 z-[1] pointer-events-none">
                   <motion.div 
-                    initial={{ scale: 1.05 }}
-                    animate={{ scale: 1 }}
-                    transition={{ duration: 2, ease: "easeOut" }}
-                    className="absolute inset-0"
+                    initial={{ scale: 1.1, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 0.4 }}
+                    transition={{ duration: 2.5, ease: "easeOut" }}
+                    className="w-full h-full"
                   >
-                    {/* Standard HTML image tag is completely foolproof */}
                     <img 
                       src="/skyline.jpg" 
-                      alt="City Skyline" 
-                      className="w-full h-full object-cover object-center opacity-30"
+                      alt="Nairobi Institutional Backdrop" 
+                      className="w-full h-full object-cover object-center"
                     />
                   </motion.div>
-                  
-                  {/* The Gradient: Transparent at the top so the skyline shows, fading to solid Navy at the bottom */}
-                  <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#080D19]/60 to-[#080D19]"></div>
                 </div>
 
-                {/* Hero Content */}
-                <div className="relative z-10 max-w-[1100px] w-full px-[24px] md:px-[40px] text-center mt-[40px]">
-                  <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2 }}>
-                    <p className="font-mono text-[9px] md:text-[10px] tracking-[0.4em] uppercase text-[#B89B5E] mb-[20px] md:mb-[24px]">
+                {/* LAYER 2: THE GRADIENT SHIELDS (The Middle) */}
+                {/* This stops the image from looking like a cheap photo and makes it look like 'Atmosphere' */}
+                <div className="absolute inset-0 z-[2] pointer-events-none bg-gradient-to-b from-[#080D19] via-transparent to-[#080D19]"></div>
+                <div className="absolute inset-0 z-[2] pointer-events-none bg-[#080D19]/30"></div>
+
+                {/* LAYER 3: THE CONTENT (The Top) */}
+                <div className="relative z-[10] max-w-[1100px] w-full px-[24px] md:px-[40px] text-center">
+                  <motion.div 
+                    initial={{ opacity: 0, y: 20 }} 
+                    animate={{ opacity: 1, y: 0 }} 
+                    transition={{ duration: 1, delay: 0.5 }}
+                  >
+                    <p className="font-mono text-[10px] tracking-[0.5em] uppercase text-[#B89B5E] mb-[24px]">
                       Private Institutional Access
                     </p>
-                    <h1 className="font-serif text-[clamp(36px,5vw,72px)] font-light leading-[1.05] text-[#FDFBF7] tracking-[-0.02em] mb-[24px] md:mb-[32px] drop-shadow-2xl">
-                      Real Estate Acquisition: <br/><span className="italic text-[#94A3B8]">The Institutional Path.</span>
+                    <h1 className="font-serif text-[clamp(40px,6vw,84px)] font-light leading-[1.1] text-[#FDFBF7] tracking-[-0.02em] mb-[32px]">
+                      Real Estate Acquisition: <br/>
+                      <span className="italic text-[#94A3B8] opacity-80">The Institutional Path.</span>
                     </h1>
-                    <p className="text-[13px] md:text-[15px] text-[#94A3B8] max-w-[700px] mx-auto leading-[1.7] font-light mb-[32px] drop-shadow-md">
-                      Purchasing a built property — apartment, penthouse, or villa — involves distinct legal, structural, and management due diligence steps beyond a standard title search. Every step below applies to Kenya's residential real estate market.
+                    <p className="text-[14px] md:text-[16px] text-[#94A3B8] max-w-[750px] mx-auto leading-[1.8] font-light">
+                      Purchasing a built property — apartment, penthouse, or villa — involves distinct legal, structural, and management due diligence steps beyond a standard title search.
                     </p>
                   </motion.div>
                 </div>
+
               </div>
 
               {/* TIGHTER FOCUS-BLUR INDEX */}
