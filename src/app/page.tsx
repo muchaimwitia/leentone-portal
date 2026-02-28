@@ -95,32 +95,39 @@ export default function InvestmentPortal() {
          {step === 1 && (
             <motion.section key="s1" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
               
-              {/* CINEMATIC HERO SECTION WITH SKYLINE */}
+             {/* CINEMATIC HERO SECTION WITH SKYLINE (Visibility Fixed) */}
               <div className="relative w-full min-h-[60vh] flex items-center justify-center pt-[60px] pb-[80px] mb-[80px] md:mb-[120px] -mt-[40px]">
                 
-                {/* Background Image & Navy Gradient Shield */}
-                <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+                {/* Background Image Container */}
+                <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none bg-[#080D19]">
                   <motion.div 
                     initial={{ scale: 1.05 }}
                     animate={{ scale: 1 }}
                     transition={{ duration: 2, ease: "easeOut" }}
-                    className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-60"
-                    style={{ backgroundImage: `url('/public/hero-skyline.jpg')` }}
-                  />
-                  {/* The Gradient: Dark at top for the header, slightly transparent middle for the city, solid navy at bottom to blend into the page */}
-                  <div className="absolute inset-0 bg-gradient-to-b from-[#080D19] via-[#080D19]/80 to-[#080D19]"></div>
+                    className="absolute inset-0"
+                  >
+                    {/* Standard HTML image tag is completely foolproof */}
+                    <img 
+                      src="/skyline.jpg" 
+                      alt="City Skyline" 
+                      className="w-full h-full object-cover object-center opacity-30"
+                    />
+                  </motion.div>
+                  
+                  {/* The Gradient: Transparent at the top so the skyline shows, fading to solid Navy at the bottom */}
+                  <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#080D19]/60 to-[#080D19]"></div>
                 </div>
 
-                {/* Hero Content (Now Centered) */}
-                <div className="relative z-10 max-w-[1100px] w-full px-[24px] md:px-[40px] text-center">
+                {/* Hero Content */}
+                <div className="relative z-10 max-w-[1100px] w-full px-[24px] md:px-[40px] text-center mt-[40px]">
                   <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2 }}>
                     <p className="font-mono text-[9px] md:text-[10px] tracking-[0.4em] uppercase text-[#B89B5E] mb-[20px] md:mb-[24px]">
                       Private Institutional Access
                     </p>
-                    <h1 className="font-serif text-[clamp(36px,5vw,72px)] font-light leading-[1.05] text-[#FDFBF7] tracking-[-0.02em] mb-[24px] md:mb-[32px]">
+                    <h1 className="font-serif text-[clamp(36px,5vw,72px)] font-light leading-[1.05] text-[#FDFBF7] tracking-[-0.02em] mb-[24px] md:mb-[32px] drop-shadow-2xl">
                       Real Estate Acquisition: <br/><span className="italic text-[#94A3B8]">The Institutional Path.</span>
                     </h1>
-                    <p className="text-[13px] md:text-[15px] text-[#94A3B8] max-w-[700px] mx-auto leading-[1.7] font-light mb-[32px]">
+                    <p className="text-[13px] md:text-[15px] text-[#94A3B8] max-w-[700px] mx-auto leading-[1.7] font-light mb-[32px] drop-shadow-md">
                       Purchasing a built property — apartment, penthouse, or villa — involves distinct legal, structural, and management due diligence steps beyond a standard title search. Every step below applies to Kenya's residential real estate market.
                     </p>
                   </motion.div>
