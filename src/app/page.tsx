@@ -7,6 +7,7 @@ import InquiryForm from '@/components/luxury/InquiryForm';
 import MagneticButton from '@/components/luxury/MagneticButton';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Property, PurchaseMode } from '@/types/investment';
+import Image from 'next/image';
 
 const PROPS: Property[] = [
   { id: 'p1', name: 'The Westlands Sky Residence', loc: 'Westlands, Nairobi', kes: 65e6, seg: 'pent', beds: 4, baths: 4, sqm: 420, v: true, ref: 'NRB-WL-0871', off: false, feats: ['Full-floor layout', 'Smart home', '4 parking bays'], em: '', g: '#121A2F, #1E293B' },
