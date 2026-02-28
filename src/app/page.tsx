@@ -97,11 +97,11 @@ export default function InvestmentPortal() {
               <div className="max-w-[1100px] mx-auto px-[24px] md:px-[40px] mb-[80px] md:mb-[100px]">
                 <p className="font-mono text-[9px] md:text-[10px] tracking-[0.4em] uppercase text-[#B89B5E] mb-[20px] md:mb-[24px]">Private Luxury Real Estate</p>
                 <h1 className="font-serif text-[clamp(36px,5vw,72px)] font-light leading-[1.05] text-[#FDFBF7] tracking-[-0.02em] mb-[24px] md:mb-[32px]">
-                  Real Estate Acquisition: <br/><span className="italic text-[#94A3B8]">The Institutional & Trusted Path.</span>
+                  Luxury Real Estate Acquisition: <br/><span className="italic text-[#94A3B8]">The Institutional & Trusted Path.</span>
                 </h1>
                 <p className="text-[13px] md:text-[15px] text-[#94A3B8] max-w-[700px] leading-[1.7] font-light mb-[32px]">
                   Purchasing a built property — apartment, penthouse, or villa — involves distinct legal, structural, and management due diligence steps beyond a standard title search. Every step below Leentone applies to Kenya's residential real estate market investments.
-                </p>
+                </p>git init
               </div>
 
               {/* TIGHTER FOCUS-BLUR INDEX */}
