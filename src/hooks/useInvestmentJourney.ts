@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-// @ts-ignore - Bypassing type export check for final Vercel build
+// @ts-expect-error - Bypassing type export check for final Vercel build
 import { Currency, Property } from '@/types/investment';
 
 export const useInvestmentJourney = () => {
@@ -34,8 +34,8 @@ export const useInvestmentJourney = () => {
       if (typeof window !== 'undefined' && navigator.vibrate) {
         navigator.vibrate(pattern); 
       }
-    } catch (e) {
-      // Catching unused error variable for linter
+    } catch {
+      // Removed 'e' to satisfy @typescript-eslint/no-unused-vars
     }
   };
 
