@@ -13,7 +13,7 @@ const TICKER_DATA = [
 
 export default function LiveTicker() {
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-[1000] bg-[#03060C] border-t border-[#1E293B] h-[32px] md:h-[40px] flex items-center overflow-hidden">
+    <div className="fixed bottom-5 left-0 right-0 z-[1000] bg-[#03060C] border-t border-[#1E293B] h-[12px] md:h-[40px] flex items-center overflow-hidden">
       {/* "LIVE" Indicator */}
       <div className="absolute left-0 top-0 bottom-0 bg-[#03060C] z-10 px-4 flex items-center gap-2 border-r border-[#1E293B]">
         <span className="w-1.5 h-1.5 bg-[#B89B5E] rounded-full animate-pulse"></span>

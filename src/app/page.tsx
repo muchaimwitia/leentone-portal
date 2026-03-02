@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react'; 
 import { useInvestmentJourney } from '@/hooks/useInvestmentJourney';
 import PropertyCard from '@/components/luxury/PropertyCard';
 import InquiryForm from '@/components/luxury/InquiryForm';
@@ -26,6 +26,16 @@ export default function InvestmentPortal() {
   const [dlState, setDlState] = useState<'idle'|'compiling'|'watermarking'|'ready'>('idle');
   const [activeStepHover, setActiveStepHover] = useState<number | null>(null);
 
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   const handleDownload = () => {
     if (dlState !== 'idle') return;
     triggerHaptic(15);
@@ -46,60 +56,91 @@ export default function InvestmentPortal() {
   const activeChart = chartData[horizon];
 
   return (
-    <div className="min-h-screen pb-[100px] bg-[#080D19] text-[#FDFBF7]">
+    // 80% GLOBAL ZOOM APPLIED ON LOAD
+    <div className="min-h-screen pb-[100px] bg-[#080D19] text-[#FDFBF7] overflow-x-hidden" style={{ zoom: '0.8' }}>
       
-      {/* FOOLPROOF CENTERED HEADER */}
-      <header className="fixed top-0 left-0 right-0 w-full z-[500] glass-header border-b border-[#1E293B] py-[24px] md:py-[32px]">
+      <div className={`top-scroll-mask transition-opacity duration-700 ease-in-out ${isScrolled ? 'opacity-100' : 'opacity-0 pointer-events-none'}`} />
+
+      <header className={`glass-header z-[500] flex items-center ${isScrolled ? 'header-scrolled' : 'header-island'}`}>
         
-        {/* ABSOLUTE CURRENCY TOGGLE (Completely removed from document flow) */}
-        <div className="absolute right-[20px] md:right-[40px] top-[24px] md:top-[32px] hidden sm:flex items-center z-[510]">
-          <div onClick={() => { setCurrency(currency === 'KES' ? 'USD' : 'KES'); triggerHaptic(8); }} className="flex items-center gap-[8px] px-[12px] py-[6px] rounded-full border border-[#1E293B] cursor-pointer text-[9px] font-mono select-none hover:bg-[#121A2F] transition-all">
-            <span className={currency === 'KES' ? 'text-[#B89B5E] font-bold' : 'text-[#94A3B8]'}>KES</span>
-            <span className="text-[#94A3B8]">/</span>
-            <span className={currency === 'USD' ? 'text-[#B89B5E] font-bold' : 'text-[#94A3B8]'}>USD</span>
-          </div>
-        </div>
-
-        {/* PERFECTLY CENTERED MAIN COLUMN */}
-        <div className="flex flex-col items-center justify-center w-full max-w-[1440px] mx-auto relative z-[505]">
+        <div className={`flex transition-all duration-[800ms] ease-[cubic-bezier(0.16,1,0.3,1)] w-full max-w-[1400px] mx-auto px-[24px] md:px-[60px] ${isScrolled ? 'flex-row justify-between items-center' : 'flex-col items-center justify-center h-full'}`}>
           
-          {/* Brand Identity */}
-          <div className="flex flex-col items-center justify-center cursor-pointer mb-[24px] md:mb-[32px]" onClick={() => goToStep(1)}>
-            <div className="font-serif text-[24px] md:text-[32px] tracking-[0.02em] text-[#FDFBF7] leading-none mb-2 text-center">
-              Leentone Solutions
-            </div>
-            <div className="font-mono text-[7px] md:text-[8px] tracking-[0.4em] uppercase text-[#B89B5E] text-center">
-              NAIROBI
+          {/* LOGO & BRAND IDENTITY (Left side when scrolled) */}
+          <div 
+            className={`flex items-center cursor-pointer transition-all duration-700 ${isScrolled ? 'gap-4' : 'flex-col'}`} 
+            onClick={() => goToStep(1)}
+          >
+            <motion.div 
+              className={`border border-[#B89B5E] rounded-full flex items-center justify-center overflow-hidden bg-[#121A2F]/50 transition-all duration-700 ${isScrolled ? 'w-[32px] h-[32px] mb-0' : 'w-[85px] h-[85px] mb-[40px]'}`}
+            >
+              <img src="/ls-monogram.png" alt="LS" className="w-[180%] h-[180%] object-contain opacity-90" />
+            </motion.div>
+
+            <div className={`flex flex-col transition-all duration-700 ${isScrolled ? 'items-start justify-center' : 'items-center'}`}>
+              <div className={`font-serif tracking-[0.05em] text-[#FDFBF7] leading-none transition-all duration-700 ${isScrolled ? 'text-[18px] hidden sm:block' : 'text-[34px]'}`}>
+                Leentone Solutions
+              </div>
+              
+              {/* EXACTLY 40px (~1cm) GAP ABOVE NAIROBI. Disappears cleanly on scroll. */}
+              <div className={`font-mono text-[10px] tracking-[0.8em] uppercase text-[#B89B5E] ml-[0.8em] transition-all duration-[600ms] overflow-hidden ${isScrolled ? 'max-h-0 opacity-0 mt-0' : 'max-h-[40px] opacity-90 mt-[40px]'}`}>
+                NAIROBI
+              </div>
             </div>
           </div>
 
-          {/* Roman Numerals Navigation */}
-          <div className="flex justify-center items-center gap-[30px] md:gap-[80px]">
-            {[{s:1,l:'Context',r:'I'},{s:2,l:'Portfolio',r:'II'},{s:3,l:'Analysis',r:'III'},{s:4,l:'Inquiry',r:'IV'},{s:5,l:'Private',r:'V'}].map((item) => (
-              <button key={item.s} onClick={() => goToStep(item.s)} className="group flex flex-col items-center gap-[4px] md:gap-[6px] relative">
-                <span className={`font-serif text-[16px] md:text-[20px] transition-colors ${step === item.s ? 'text-[#B89B5E] font-medium' : 'text-[#94A3B8] group-hover:text-[#FDFBF7]'}`}>{item.r}</span>
-                <span className={`font-mono text-[7px] md:text-[8px] tracking-[0.05em] md:tracking-[0.15em] transition-colors uppercase ${step === item.s ? 'text-[#FDFBF7]' : 'text-[#94A3B8]'}`}>{item.l}</span>
-                
-                {/* Active Gold Line */}
-                {step === item.s && <motion.div layoutId="navActive" className="absolute -bottom-[16px] md:-bottom-[20px] h-[1px] w-[140%] bg-[#B89B5E]" />}
-              </button>
-            ))}
+          {/* RIGHT SIDE: ROMAN NUMERALS + CURRENCY */}
+          {/* This entire wrapper shrinks to 0 width/opacity when NOT scrolled! */}
+          <div className={`transition-all duration-[800ms] ease-[cubic-bezier(0.16,1,0.3,1)] overflow-hidden flex items-center ${isScrolled ? 'max-w-[1000px] opacity-100 ml-auto' : 'max-w-0 opacity-0 ml-0 pointer-events-none'}`}>
+            
+            <nav className="flex items-center gap-4 sm:gap-6 md:gap-10 w-max">
+              {[{s:1,l:'Context',r:'I'},{s:2,l:'Portfolio',r:'II'},{s:3,l:'Analysis',r:'III'},{s:4,l:'Inquiry',r:'IV'},{s:5,l:'Private',r:'V'}].map((item) => (
+                <button 
+                  key={item.s} 
+                  onClick={() => { goToStep(item.s); triggerHaptic(5); }} 
+                  // Items are permanently side-by-side with clear labels
+                  className="group flex items-center relative flex-row gap-2"
+                >
+                  <span className={`font-serif leading-none transition-all duration-500 ${step === item.s ? 'text-[#B89B5E]' : 'text-[#94A3B8] group-hover:text-[#FDFBF7]'} text-[18px] md:text-[22px]`}>
+                    {item.r}
+                  </span>
+                  
+                  {/* Labels are highly visible and permanent next to numerals */}
+                  <span className={`font-mono tracking-[0.1em] leading-none uppercase transition-all duration-500 flex ${step === item.s ? 'text-[#FDFBF7]' : 'text-[#94A3B8]'} text-[9px] md:text-[11px]`}>
+                    {item.l}
+                  </span>
+                  
+                  {/* Active Underline */}
+                  {step === item.s && (
+                    <motion.div 
+                      layoutId="navActive" 
+                      className="absolute bg-[#B89B5E] h-[1px] transition-all duration-700 -bottom-[12px] w-full left-0" 
+                    />
+                  )}
+                </button>
+              ))}
+            </nav>
+
+            {/* CURRENCY TOGGLE - Slotted cleanly next to navigation */}
+            <div className="hidden lg:flex items-center ml-8 pl-8 border-l border-[#1E293B]">
+               <div onClick={() => setCurrency(currency === 'KES' ? 'USD' : 'KES')} className="text-[10px] font-mono cursor-pointer opacity-60 hover:opacity-100 px-3 py-1.5 border border-[#1E293B] rounded-[2px] transition-colors">
+                 {currency}
+               </div>
+            </div>
+            
           </div>
 
         </div>
       </header>
 
-      {/* Main Content (Padding updated to clear the taller header) */}
-      <main className="pt-[160px] md:pt-[220px]">
+      {/* Main Content */}
+      <main className="pt-[250px] md:pt-[540px]">
         <AnimatePresence mode="wait">
           
-         {step === 1 && (
+          {/* STEP 1: CONTEXT */}
+          {step === 1 && (
             <motion.section key="s1" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
               
-             {/* CINEMATIC HERO SECTION (FORCED STACKING) */}
-              <div className="relative w-full min-h-[70vh] flex items-center justify-center pt-[60px] pb-[80px] mb-[80px] md:mb-[120px] -mt-[40px] overflow-hidden bg-[#080D19]">
-                
-                {/* LAYER 1: THE IMAGE (The Base) */}
+              <div className="relative w-full min-h-[60vh] md:min-h-[70vh] flex items-center justify-center pt-[40px] md:pt-[60px] pb-[60px] md:pb-[80px] mb-[60px] md:mb-[120px] overflow-hidden bg-[#080D19]">
                 <div className="absolute inset-0 z-[1] pointer-events-none">
                   <motion.div 
                     initial={{ scale: 1.1, opacity: 0 }}
@@ -107,83 +148,65 @@ export default function InvestmentPortal() {
                     transition={{ duration: 2.5, ease: "easeOut" }}
                     className="w-full h-full"
                   >
-                    <img 
-                      src="/skyline.jpg" 
-                      alt="Nairobi Institutional Backdrop" 
-                      className="w-full h-full object-cover object-center"
-                    />
+                    <img src="/skyline.jpg" alt="Nairobi" className="w-full h-full object-cover object-center" />
                   </motion.div>
                 </div>
 
-                {/* LAYER 2: THE GRADIENT SHIELDS (The Middle) */}
-                {/* This stops the image from looking like a cheap photo and makes it look like 'Atmosphere' */}
                 <div className="absolute inset-0 z-[2] pointer-events-none bg-gradient-to-b from-[#080D19] via-transparent to-[#080D19]"></div>
                 <div className="absolute inset-0 z-[2] pointer-events-none bg-[#080D19]/30"></div>
 
-                {/* LAYER 3: THE CONTENT (The Top) */}
                 <div className="relative z-[10] max-w-[1100px] w-full px-[24px] md:px-[40px] text-center">
-                  <motion.div 
-                    initial={{ opacity: 0, y: 20 }} 
-                    animate={{ opacity: 1, y: 0 }} 
-                    transition={{ duration: 1, delay: 0.5 }}
-                  >
-                    <p className="font-mono text-[10px] tracking-[0.5em] uppercase text-[#B89B5E] mb-[24px]">
-                      Private Institutional Path
-                    </p>
-                    <h1 className="font-serif text-[clamp(40px,6vw,84px)] font-light leading-[1.1] text-[#FDFBF7] tracking-[-0.02em] mb-[32px]">
-                      Luxury Real Estate Acquisition <br/>
-                      <span className="italic text-[#94A3B8] opacity-80"></span>
+                  <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.5 }}>
+                    <p className="font-mono text-[9px] md:text-[10px] tracking-[0.5em] uppercase text-[#B89B5E] mb-[20px] md:mb-[24px]">Private Institutional Path</p>
+                    <h1 className="font-serif text-[clamp(32px,6vw,84px)] font-light leading-[1.1] text-[#FDFBF7] tracking-[-0.02em] mb-[24px] md:mb-[32px]">
+                      Luxury Real Estate Acquisition
                     </h1>
-                    <p className="text-[14px] md:text-[16px] text-[#94A3B8] max-w-[750px] mx-auto leading-[1.8] font-light">
+                    <p className="text-[13px] md:text-[16px] text-[#94A3B8] max-w-[750px] mx-auto leading-[1.8] font-light">
                       Purchasing a built or off-plan property — apartment, penthouse, or villa — involves distinct legal, structural, and management due diligence steps beyond a standard title search.
                     </p>
                   </motion.div>
                 </div>
-
               </div>
 
-              {/* TIGHTER FOCUS-BLUR INDEX */}
-              <div className="max-w-[1200px] mx-auto px-[24px] md:px-[40px] mb-[120px]">
-                <div className="mb-10 flex justify-between items-end border-b border-[#1E293B] pb-4">
-                  <h2 className="font-serif text-[24px] md:text-[32px] text-[#FDFBF7] font-light tracking-tight">The  Legal Acquisition Process through Leentone</h2>
+              <div className="max-w-[1200px] mx-auto px-[24px] md:px-[40px] mb-[80px] md:mb-[120px]">
+                <div className="mb-8 md:mb-10 flex justify-between items-end border-b border-[#1E293B] pb-4">
+                  <h2 className="font-serif text-[20px] md:text-[32px] text-[#FDFBF7] font-light tracking-tight">The Legal Acquisition Process through Leentone</h2>
                   <p className="font-mono text-[9px] tracking-[0.3em] uppercase text-[#B89B5E] hidden md:block">08 Mandatory Steps</p>
                 </div>
                 
                 <div className="relative group/list flex flex-col gap-[4px]">
                   {[
-                    { n: '01', t: 'Verify Title via Ardhisasa', d: 'Run a title search on Ardhisasa (Ministry of Lands). For apartments, confirm a registered Sectional Title under the Sectional Properties Act 2020 — not merely an allocation letter. Verify charges and cautions.', tag: 'Sectional Properties Act 2020' },
-                    { n: '02', t: 'Engage Conveyancing Advocate', d: 'Appoint an LSK-registered advocate specialising in residential conveyancing. Fees are regulated (typically 1.25%). Never use the developer\'s advocate as your sole representation.', tag: 'Law Society of Kenya' },
-                    { n: '03', t: 'Execute Sale Agreement (SPA)', d: 'Review the SPA for unit specifics, parking, and completion clauses. A 10% deposit must be held in the advocate\'s regulated client account, never transferred to the developer\'s operational account.', tag: 'Advocates Accounts Rules' },
-                    { n: '04', t: 'Obtain Occupation Certificate (OC)', d: 'Demand the Occupation Certificate issued by the County Government confirming habitability. A property without a valid OC is technically illegal to occupy and a bank will not finance it.', tag: 'Physical Planning Act 2019' },
-                    { n: '05', t: 'Structural & Snagging Inspection', d: 'Hire an independent structural engineer and quantity surveyor. Request a snagging report cataloguing defects before final payment. For assets >KES 35M, require an M&E systems audit.', tag: 'Engineers Board of Kenya' },
-                    { n: '06', t: 'Review Management & By-Laws', d: 'Audit the management company under the Sectional Properties Act. Review service charge schedules, reserve fund balances, building insurance, and by-laws governing sub-letting and pets.', tag: 'Management Audit' },
-                    { n: '07', t: 'Clearance & Stamp Duty', d: 'Obtain Land Rent, Land Rates, and Service Charge Clearance Certificates. Settle Stamp Duty at 4% via KRA iTax based on the Chief Government Valuer\'s assessment.', tag: 'Stamp Duty Act · KRA iTax' },
-                    { n: '08', t: 'Lodge Transfer of Title', d: 'Lodge the Transfer Instrument with the original title and clearances. The Registrar issues a new Sectional Title in your name (30–90 days). Cross-check details against the digital record.', tag: 'Land Registration Act 2012' }
+                    { n: '01', t: 'Verify Title via Ardhisasa', d: 'Run a title search on Ardhisasa (Ministry of Lands). For apartments, confirm a registered Sectional Title under the Sectional Properties Act 2020.', tag: 'Sectional Properties Act 2020' },
+                    { n: '02', t: 'Engage Conveyancing Advocate', d: 'Appoint an LSK-registered advocate specialising in residential conveyancing. Fees are regulated (typically 1.25%).', tag: 'Law Society of Kenya' },
+                    { n: '03', t: 'Execute Sale Agreement (SPA)', d: 'Review the SPA for unit specifics, parking, and completion clauses. A 10% deposit must be held in the advocate\'s regulated client account.', tag: 'Advocates Accounts Rules' },
+                    { n: '04', t: 'Obtain Occupation Certificate (OC)', d: 'Demand the Occupation Certificate issued by the County Government confirming habitability.', tag: 'Physical Planning Act 2019' },
+                    { n: '05', t: 'Structural & Snagging Inspection', d: 'Hire an independent structural engineer and quantity surveyor. Request a snagging report cataloguing defects.', tag: 'Engineers Board of Kenya' },
+                    { n: '06', t: 'Review Management & By-Laws', d: 'Audit the management company under the Sectional Properties Act. Review service charge schedules.', tag: 'Management Audit' },
+                    { n: '07', t: 'Clearance & Stamp Duty', d: 'Obtain Land Rent, Land Rates, and Service Charge Clearance Certificates. Settle Stamp Duty at 4%.', tag: 'Stamp Duty Act · KRA iTax' },
+                    { n: '08', t: 'Lodge Transfer of Title', d: 'Lodge the Transfer Instrument with the original title and clearances. The Registrar issues a new Sectional Title.', tag: 'Land Registration Act 2012' }
                   ].map((item, index) => (
                     <div 
                       key={item.n} 
                       onMouseEnter={() => setActiveStepHover(index)}
                       onMouseLeave={() => setActiveStepHover(null)}
-                      className={`relative p-[20px] md:p-[28px] bg-[#121A2F] border border-[#1E293B] flex flex-col md:flex-row gap-[16px] md:gap-[24px] items-start transition-all duration-[600ms] ease-[cubic-bezier(0.33,1,0.68,1)] overflow-hidden rounded-[2px]
+                      className={`relative p-[16px] md:p-[28px] bg-[#121A2F] border border-[#1E293B] flex flex-col md:flex-row gap-[12px] md:gap-[24px] items-start transition-all duration-[600ms] ease-[cubic-bezier(0.33,1,0.68,1)] overflow-hidden rounded-[2px]
                         ${activeStepHover !== null && activeStepHover !== index ? 'opacity-30 blur-[4px] scale-[0.99]' : 'opacity-100 scale-100 luxury-shadow z-10 hover:bg-[#162038] hover:border-[#B89B5E]'}
                       `}
                     >
-                      {/* Scaled down watermark */}
-                      <div className="absolute left-0 md:left-4 top-1/2 -translate-y-1/2 font-serif text-[80px] md:text-[120px] text-[#FDFBF7] opacity-[0.02] select-none pointer-events-none italic transition-transform duration-1000 group-hover:translate-x-4">
-                         {item.n}
+                      <div className="absolute left-[-10px] md:left-4 top-1/2 -translate-y-1/2 font-serif text-[50px] md:text-[120px] text-[#FDFBF7] opacity-[0.02] select-none pointer-events-none italic transition-transform duration-1000 group-hover:translate-x-4">
+                        {item.n}
                       </div>
-
                       <div className="md:w-[10%] pt-1 z-10">
-                         <span className={`font-serif text-[24px] md:text-[32px] leading-none transition-colors duration-500 ${activeStepHover === index ? 'text-[#B89B5E]' : 'text-[#94A3B8]'}`}>
+                         <span className={`font-serif text-[20px] md:text-[32px] leading-none transition-colors duration-500 ${activeStepHover === index ? 'text-[#B89B5E]' : 'text-[#94A3B8]'}`}>
                            {item.n}
                          </span>
                       </div>
                       <div className="w-full md:w-[65%] z-10">
-                         <h4 className="font-serif text-[18px] md:text-[20px] text-[#FDFBF7] mb-2 font-medium tracking-tight">{item.t}</h4>
+                         <h4 className="font-serif text-[16px] md:text-[20px] text-[#FDFBF7] mb-1 md:mb-2 font-medium tracking-tight">{item.t}</h4>
                          <p className="text-[12px] md:text-[13px] text-[#94A3B8] leading-[1.6] font-light">{item.d}</p>
                       </div>
                       <div className="w-full md:w-[25%] flex justify-start md:justify-end mt-2 md:mt-0 z-10">
-                         <span className="font-mono text-[8px] tracking-[0.2em] text-[#B89B5E] uppercase border border-[#1E293B] px-3 py-1.5 rounded-[2px] bg-[#080D19]">
+                         <span className="font-mono text-[7px] md:text-[8px] tracking-[0.2em] text-[#B89B5E] uppercase border border-[#1E293B] px-2 md:px-3 py-1 md:py-1.5 rounded-[2px] bg-[#080D19]">
                            {item.tag}
                          </span>
                       </div>
@@ -192,255 +215,145 @@ export default function InvestmentPortal() {
                 </div>
               </div>
 
-              {/* COMPACT FORENSIC DOSSIER */}
-              <div className="bg-[#03060C] py-[80px] md:py-[100px] px-[24px] md:px-[40px] relative overflow-hidden text-[#FDFBF7] border-y border-[#1E293B]">
+              <div className="bg-[#03060C] py-[60px] md:py-[100px] px-[24px] md:px-[40px] relative overflow-hidden text-[#FDFBF7] border-y border-[#1E293B]">
                 <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'linear-gradient(#1E293B 1px, transparent 1px), linear-gradient(90deg, #1E293B 1px, transparent 1px)', backgroundSize: '40px 40px' }}></div>
-                
                 <div className="max-w-[1200px] mx-auto relative z-10">
-                  <div className="mb-[60px] md:mb-[80px] flex flex-col md:flex-row justify-between items-start md:items-end border-b border-[#1E293B] pb-8 gap-6">
+                  <div className="mb-[40px] md:mb-[80px] flex flex-col md:flex-row justify-between items-start md:items-end border-b border-[#1E293B] pb-6 md:pb-8 gap-4 md:gap-6">
                     <div>
-                      <p className="font-mono text-[9px] tracking-[0.4em] uppercase text-[#B89B5E] mb-[16px] flex items-center gap-3">
-                        <span className="w-2 h-2 bg-[#8A2525] rounded-full animate-pulse"></span> Classified Advisory
+                      <p className="font-mono text-[8px] md:text-[9px] tracking-[0.4em] uppercase text-[#B89B5E] mb-[12px] md:mb-[16px] flex items-center gap-2 md:gap-3">
+                        <span className="w-1.5 h-1.5 md:w-2 md:h-2 bg-[#8A2525] rounded-full animate-pulse"></span> Classified Advisory
                       </p>
-                      <h2 className="font-serif text-[28px] md:text-[40px] text-[#FDFBF7] font-light tracking-tight leading-tight">Immediate Red Flags</h2>
+                      <h2 className="font-serif text-[24px] md:text-[40px] text-[#FDFBF7] font-light tracking-tight leading-tight">Immediate Red Flags</h2>
                     </div>
-                    <p className="text-[12px] md:text-[13px] text-[#94A3B8] font-mono uppercase tracking-[0.1em] max-w-[300px] text-left md:text-right">
+                    <p className="text-[11px] md:text-[13px] text-[#94A3B8] font-mono uppercase tracking-[0.1em] max-w-[300px] text-left md:text-right">
                       Identification of these warrants an immediate halt to capital deployment.
                     </p>
                   </div>
 
-                  <div className="columns-1 md:columns-2 gap-[24px] space-y-[24px]">
+                  <div className="columns-1 md:columns-2 gap-[16px] md:gap-[24px] space-y-[16px] md:space-y-[24px]">
                     {[
-                      { t: 'Allotment Letters Only', d: 'Agreements for sale or allotment letters do not constitute legal ownership under Kenyan law. Insist on a registered Sectional Title under the Sectional Properties Act 2020.' },
-                      { t: 'Missing Occupation Certificate', d: 'A building without a valid OC from the county government is illegal to occupy and unmortgageable. Never release final payment before the OC is in hand.' },
-                      { t: 'Undisclosed Service Charges', d: 'Hidden monthly fees (KES 50k–200k+) dramatically alter the true cost of ownership and rental yield calculations. Demand a full written breakdown.' },
-                      { t: 'Encumbered Title Record', d: 'If the Ardhisasa search reveals a bank charge or caution, the unit cannot be transferred cleanly. Demand written evidence of discharge from the financier.' },
-                      { t: 'No Established Reserve Fund', d: 'A luxury development without audited accounts and a funded reserve account for future capital repairs is a serious liability, leading to rapid building deterioration.' },
-                      { t: 'Plan Deviations & Subdivisions', d: 'Physically measure the unit against the registered floor plan. Discrepancies >5% indicate illegal internal subdivisions or encroachment into common areas.' },
-                      { t: 'Identity / Deed Discrepancies', d: 'The registered owner\'s full name and ID on the sectional title must exactly match the seller\'s ID. Any discrepancy indicates potential impersonation or fraud.' },
-                      { t: 'Unlicensed Intermediaries', d: 'An unlicensed agent or unregistered developer offers zero regulatory recourse if the deal collapses. Verify EARB and NCA registration before paying any fee.' }
+                      { t: 'Allotment Letters Only', d: 'Agreements for sale or allotment letters do not constitute legal ownership under Kenyan law.' },
+                      { t: 'Missing Occupation Certificate', d: 'A building without a valid OC from the county government is illegal to occupy.' },
+                      { t: 'Undisclosed Service Charges', d: 'Hidden monthly fees dramatically alter the true cost of ownership.' },
+                      { t: 'Encumbered Title Record', d: 'If the search reveals a bank charge, the unit cannot be transferred cleanly.' },
+                      { t: 'No Established Reserve Fund', d: 'A luxury development without audited accounts is a serious liability.' },
+                      { t: 'Plan Deviations', d: 'Physically measure the unit against the registered floor plan.' },
+                      { t: 'Identity Discrepancies', d: 'The registered owner\'s name must exactly match the seller\'s ID.' },
+                      { t: 'Unlicensed Intermediaries', d: 'An unlicensed agent offers zero regulatory recourse.' }
                     ].map((item, i) => (
-                      <div key={i} className="break-inside-avoid relative group p-[24px] md:p-[32px] bg-[#080D19] border border-[#1E293B] hover:border-[#8A2525] hover:bg-[#0B0F1A] transition-all duration-500 cursor-crosshair rounded-[2px]">
+                      <div key={i} className="break-inside-avoid relative group p-[20px] md:p-[32px] bg-[#080D19] border border-[#1E293B] hover:border-[#8A2525] hover:bg-[#0B0F1A] transition-all duration-500 cursor-crosshair rounded-[2px]">
                         <div className="absolute top-0 left-0 w-0 h-[2px] bg-[#8A2525] group-hover:w-full transition-all duration-[800ms] ease-out shadow-[0_0_10px_#8A2525]"></div>
-                        <div className="flex justify-between items-start mb-4">
-                          <span className="font-mono text-[9px] text-[#94A3B8] group-hover:text-[#B89B5E] transition-colors"> RED FLAG_{i+1}</span>
-                          <span className="text-[#8A2525] opacity-0 group-hover:opacity-100 transition-opacity font-mono text-[9px] tracking-widest uppercase">Critical Risk</span>
+                        <div className="flex justify-between items-start mb-3 md:mb-4">
+                          <span className="font-mono text-[8px] md:text-[9px] text-[#94A3B8] group-hover:text-[#B89B5E] transition-colors"> RED FLAG_{i+1}</span>
+                          <span className="text-[#8A2525] opacity-0 group-hover:opacity-100 transition-opacity font-mono text-[8px] md:text-[9px] tracking-widest uppercase">Critical Risk</span>
                         </div>
-                        <h4 className="font-serif text-[18px] md:text-[20px] text-[#FDFBF7] mb-2 font-light leading-tight group-hover:text-[#FDFBF7] transition-colors">{item.t}</h4>
-                        <p className="text-[12px] md:text-[13px] text-[#94A3B8] leading-[1.6] font-light transition-colors">{item.d}</p>
+                        <h4 className="font-serif text-[16px] md:text-[20px] text-[#FDFBF7] mb-1 md:mb-2 font-light leading-tight group-hover:text-[#FDFBF7] transition-colors">{item.t}</h4>
+                        <p className="text-[11px] md:text-[13px] text-[#94A3B8] leading-[1.6] font-light transition-colors">{item.d}</p>
                       </div>
                     ))}
                   </div>
                 </div>
               </div>
 
-              <div className="flex justify-center pt-[60px] pb-[40px]">
-                 <MagneticButton onClick={() => goToStep(2)} className="w-full md:w-auto px-[50px] py-[20px] bg-[#FDFBF7] text-[#080D19] rounded-[2px] font-mono text-[10px] tracking-[0.4em] uppercase hover:bg-[#B89B5E] hover:text-[#FDFBF7] transition-colors duration-500 shadow-xl">
-                   Enter Portfolio Collection
+              <div className="flex justify-center pt-[40px] md:pt-[60px] pb-[40px]">
+                 <MagneticButton onClick={() => goToStep(2)} className="w-full md:w-auto px-[30px] md:px-[50px] py-[16px] md:py-[20px] bg-[#FDFBF7] text-[#080D19] rounded-[2px] font-mono text-[9px] md:text-[10px] tracking-[0.4em] uppercase hover:bg-[#B89B5E] hover:text-[#FDFBF7] transition-colors duration-500 shadow-xl">
+                    Enter Portfolio Collection
                  </MagneticButton>
               </div>
-
             </motion.section>
           )}
 
-        {/* STEP 2: THE PRIME COLLECTION (STRICT DUO-GRID) */}
+          {/* STEP 2: PORTFOLIO */}
           {step === 2 && (
-            <motion.section 
-              key="s2" 
-              initial={{ opacity: 0, y: 20 }} 
-              animate={{ opacity: 1, y: 0 }} 
-              transition={luxuryTransition} 
-              className="max-w-[1200px] mx-auto px-[20px] md:px-[40px]"
-            >
+            <motion.section key="s2" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={luxuryTransition} className="max-w-[1200px] mx-auto px-[24px] md:px-[40px]">
               <div className="text-center mb-[40px] md:mb-[60px]">
-                <p className="font-mono text-[9px] md:text-[10px] tracking-[0.5em] uppercase text-[#B89B5E] mb-[16px]">
-                  Step II — Selection
-                </p>
-                <h2 className="font-serif text-[clamp(32px,4vw,48px)] font-light text-[#FDFBF7]">
-                  The Prime Collection
-                </h2>
+                <p className="font-mono text-[9px] md:text-[10px] tracking-[0.5em] uppercase text-[#B89B5E] mb-[16px]">Step II — Selection</p>
+                <h2 className="font-serif text-[clamp(28px,4vw,48px)] font-light text-[#FDFBF7]">The Prime Collection</h2>
               </div>
-
-              {/* Locked to 2 columns on tablet/desktop for a more compact, justified feel */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-[24px] md:gap-[40px]">
                 {PROPS.filter(p => !p.off || (step as number) === 5).map(p => (
-                   <PropertyCard 
-                     key={p.id} 
-                     property={p} 
-                     formatPrice={formatPrice} 
-                     currency={currency} 
-                     onSelect={(p) => { 
-                       setSelectedProperty(p); 
-                       goToStep(3); 
-                       triggerHaptic(10);
-                     }} 
-                   />
+                   <PropertyCard key={p.id} property={p} formatPrice={formatPrice} currency={currency} onSelect={(p) => { setSelectedProperty(p); goToStep(3); triggerHaptic(10); }} />
                 ))}
               </div>
             </motion.section>
           )}
           
-          {/* STEP 3: DYNAMIC FINANCIAL ANALYSIS */}
+          {/* STEP 3: ANALYSIS */}
           {step === 3 && (
-             <motion.section 
-               key="s3" 
-               initial={{ opacity: 0, x: 20 }} 
-               animate={{ opacity: 1, x: 0 }} 
-               transition={luxuryTransition} 
-               className="max-w-[1000px] mx-auto px-[24px]"
-             >
-               <div className="text-center mb-10">
-                 <p className="font-mono text-[9px] tracking-[0.3em] uppercase text-[#B89B5E] mb-[10px]">Step III — Forensic Analysis</p>
-                 <h2 className="font-serif text-[32px] md:text-[42px] font-light text-[#FDFBF7]">Yield & Equity Projections</h2>
-                 <p className="text-[13px] text-[#94A3B8] mt-3 italic font-serif">Asset Ref: {selectedProperty?.ref || "Boutique Selection"}</p>
+             <motion.section key="s3" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={luxuryTransition} className="max-w-[1000px] mx-auto px-[20px] md:px-[24px]">
+               <div className="text-center mb-8 md:mb-10">
+                 <p className="font-mono text-[9px] tracking-[0.3em] uppercase text-[#B89B5E] mb-[8px] md:mb-[10px]">Step III — Forensic Analysis</p>
+                 <h2 className="font-serif text-[28px] md:text-[42px] font-light text-[#FDFBF7]">Yield & Equity Projections</h2>
                </div>
                
-               {/* THE STRATEGY TOGGLE */}
                <div className="grid grid-cols-2 gap-[2px] p-[2px] rounded-[2px] bg-[#1E293B] mb-8 max-w-[600px] mx-auto border border-[#1E293B]">
-                 <button 
-                   onClick={() => {setMode('cash'); triggerHaptic(10);}} 
-                   className={`py-[14px] text-[10px] uppercase tracking-widest transition-all ${mode === 'cash' ? 'bg-[#FDFBF7] text-[#080D19] font-bold' : 'text-[#94A3B8] hover:text-[#FDFBF7]'}`}
-                 >
-                   Outright Cash
-                 </button>
-                 <button 
-                   onClick={() => {setMode('mortgage'); triggerHaptic(10);}} 
-                   className={`py-[14px] text-[10px] uppercase tracking-widest transition-all ${mode === 'mortgage' ? 'bg-[#FDFBF7] text-[#080D19] font-bold' : 'text-[#94A3B8] hover:text-[#FDFBF7]'}`}
-                 >
-                   Debt Leverage
-                 </button>
+                 <button onClick={() => {setMode('cash'); triggerHaptic(10);}} className={`py-[12px] md:py-[14px] text-[9px] md:text-[10px] uppercase tracking-widest transition-all ${mode === 'cash' ? 'bg-[#FDFBF7] text-[#080D19] font-bold' : 'text-[#94A3B8] hover:text-[#FDFBF7]'}`}>Outright Cash</button>
+                 <button onClick={() => {setMode('mortgage'); triggerHaptic(10);}} className={`py-[12px] md:py-[14px] text-[9px] md:text-[10px] uppercase tracking-widest transition-all ${mode === 'mortgage' ? 'bg-[#FDFBF7] text-[#080D19] font-bold' : 'text-[#94A3B8] hover:text-[#FDFBF7]'}`}>Debt Leverage</button>
                </div>
 
-               <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-                 
-                 {/* LEFT: TIME HORIZON & STATS */}
-                 <div className="space-y-6">
-                    <div className="bg-[#121A2F] border border-[#1E293B] p-6 rounded-[2px]">
+               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8 items-start">
+                 <div className="space-y-4 md:space-y-6">
+                    <div className="bg-[#121A2F] border border-[#1E293B] p-5 md:p-6 rounded-[2px]">
                       <span className="font-mono text-[8px] text-[#B89B5E] uppercase tracking-widest block mb-4">Investment Cycle</span>
                       <div className="flex gap-2">
                         {[5, 10, 15].map(yr => (
-                          <button 
-                            key={yr} 
-                            onClick={() => {setHorizon(yr as 5|10|15); triggerHaptic(8);}} 
-                            className={`flex-1 py-3 border transition-all text-[10px] font-mono ${horizon === yr ? 'bg-[#B89B5E] border-[#B89B5E] text-[#080D19]' : 'border-[#1E293B] text-[#94A3B8] hover:border-[#B89B5E]'}`}
-                          >
-                            {yr}Y
-                          </button>
+                          <button key={yr} onClick={() => {setHorizon(yr as 5|10|15); triggerHaptic(8);}} className={`flex-1 py-3 border transition-all text-[10px] font-mono ${horizon === yr ? 'bg-[#B89B5E] border-[#B89B5E] text-[#080D19]' : 'border-[#1E293B] text-[#94A3B8] hover:border-[#B89B5E]'}`}>{yr}Y</button>
                         ))}
-                      </div>
-                    </div>
-
-                    <div className="bg-[#121A2F] border border-[#1E293B] p-6 rounded-[2px] space-y-4">
-                      <div className="flex justify-between items-end border-b border-[#1E293B] pb-3">
-                        <span className="font-mono text-[8px] text-[#94A3B8] uppercase">Net Yield</span>
-                        <span className="font-serif text-[20px] text-[#FDFBF7]">{mode === 'cash' ? '9.2%' : '18.4%'}</span>
-                      </div>
-                      <div className="flex justify-between items-end border-b border-[#1E293B] pb-3">
-                        <span className="font-mono text-[8px] text-[#94A3B8] uppercase">Capital Appr.</span>
-                        <span className="font-serif text-[20px] text-[#FDFBF7]">~7.5% <span className="text-[10px] text-[#94A3B8]">p.a.</span></span>
                       </div>
                     </div>
                  </div>
 
-                 {/* CENTER/RIGHT: THE CHART */}
-                 <div className="lg:col-span-2 bg-[#121A2F] border border-[#1E293B] p-8 rounded-[2px] luxury-shadow">
-                    <div className="relative h-[250px] w-full border-b border-l border-[#1E293B] pt-4">
+                 <div className="lg:col-span-2 bg-[#121A2F] border border-[#1E293B] p-5 md:p-8 rounded-[2px] luxury-shadow">
+                    <div className="relative h-[200px] md:h-[250px] w-full border-b border-l border-[#1E293B] pt-4">
                       <svg viewBox="0 0 500 200" preserveAspectRatio="none" className="w-full h-full overflow-visible">
-                        {/* Grid Lines */}
                         {[0.25, 0.5, 0.75].map(v => <line key={v} x1="0" y1={200*v} x2="500" y2={200*v} stroke="#1E293B" strokeWidth="1" strokeDasharray="4 4" />)}
-                        
-                        <motion.path 
-                          d={mode === 'cash' ? activeChart.cash : activeChart.mort} 
-                          fill="none" stroke="#B89B5E" strokeWidth="3" 
-                          initial={{ pathLength: 0 }} 
-                          animate={{ pathLength: 1, d: mode === 'cash' ? activeChart.cash : activeChart.mort }} 
-                          transition={{ duration: 1.5, ease: "easeInOut" }} 
-                        />
+                        <motion.path d={mode === 'cash' ? activeChart.cash : activeChart.mort} fill="none" stroke="#B89B5E" strokeWidth="3" initial={{ pathLength: 0 }} animate={{ pathLength: 1, d: mode === 'cash' ? activeChart.cash : activeChart.mort }} transition={{ duration: 1.5, ease: "easeInOut" }} />
                       </svg>
-                      <div className="flex justify-between mt-4 text-[9px] font-mono text-[#94A3B8] uppercase tracking-widest">
-                        <span>Inception</span>
-                        <span>Maturity ({horizon} Years)</span>
-                      </div>
                     </div>
-                    
-                    <div className="mt-10">
-                      <button 
-                        onClick={handleDownload}
-                        disabled={dlState !== 'idle'}
-                        className="w-full py-5 border border-[#B89B5E] text-[#B89B5E] font-mono text-[10px] tracking-[0.3em] uppercase hover:bg-[#B89B5E] hover:text-[#080D19] transition-all flex items-center justify-center gap-4"
-                      >
+                    <div className="mt-8 md:mt-10">
+                      <button onClick={handleDownload} disabled={dlState !== 'idle'} className="w-full py-4 md:py-5 border border-[#B89B5E] text-[#B89B5E] font-mono text-[9px] md:text-[10px] tracking-[0.3em] uppercase hover:bg-[#B89B5E] hover:text-[#080D19] transition-all flex items-center justify-center gap-4">
                         {dlState === 'idle' ? '[ DOWNLOAD FORENSIC MEMORANDUM ]' : '[ COMPILING ENCRYPTED DATA... ]'}
                       </button>
                     </div>
                  </div>
                </div>
-
-               <div className="flex justify-between items-center mt-12 border-t border-[#1E293B] pt-8">
+               <div className="flex flex-col md:flex-row justify-between items-center gap-6 mt-10 md:mt-12 border-t border-[#1E293B] pt-8">
                  <button onClick={() => goToStep(2)} className="font-mono text-[10px] text-[#94A3B8] uppercase tracking-widest hover:text-[#FDFBF7]">← Portfolio</button>
-                 <button onClick={() => goToStep(4)} className="px-12 py-4 bg-[#B89B5E] text-[#080D19] font-mono text-[10px] font-bold uppercase tracking-widest shadow-xl">Inquire Access</button>
+                 <button onClick={() => goToStep(4)} className="w-full md:w-auto px-12 py-4 bg-[#B89B5E] text-[#080D19] font-mono text-[10px] font-bold uppercase tracking-widest shadow-xl">Inquire Access</button>
                </div>
              </motion.section>
           )}
 
           {/* STEP 4: INQUIRY */}
           {step === 4 && (
-             <motion.section key="s4" className="max-w-[600px] mx-auto pt-4 md:pt-10 px-[20px]">
+             <motion.section key="s4" className="max-w-[600px] mx-auto pt-4 md:pt-10 px-[24px]">
                 <div className="text-center mb-10">
                   <p className="font-mono text-[9px] md:text-[10px] tracking-[0.3em] uppercase text-[#B89B5E] mb-[10px]">Step IV — Engagement</p>
-                  <h2 className="font-serif text-[32px] md:text-[36px] font-light text-[#FDFBF7]">Strategic Consultation</h2>
+                  <h2 className="font-serif text-[28px] md:text-[36px] font-light text-[#FDFBF7]">Strategic Consultation</h2>
                 </div>
                 <InquiryForm onComplete={() => goToStep(5)} triggerHaptic={triggerHaptic} />
              </motion.section>
           )}
 
-         {/* STEP 5: PRIVATE INVENTORY (DECRYPTED VIEW) */}
+          {/* STEP 5: PRIVATE RESERVE (Unlocked Portfolio) */}
           {step === 5 && (
-            <motion.section 
-              key="s5" 
-              initial={{ opacity: 0 }} 
-              animate={{ opacity: 1 }} 
-              className="max-w-[1400px] mx-auto px-[20px] md:px-[40px]"
-            >
-               <div className="text-center mb-[60px]">
-                <motion.div
-                  initial={{ width: 0 }}
-                  animate={{ width: "100%" }}
-                  transition={{ duration: 2, ease: "easeInOut" }}
-                  className="h-[1px] bg-[#B89B5E] mb-8 mx-auto max-w-[200px]"
-                />
-                <p className="font-mono text-[9px] tracking-[0.5em] uppercase text-[#B89B5E] mb-[16px]">
-                  Clearance Level: Principal
+            <motion.section key="s5" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={luxuryTransition} className="max-w-[1200px] mx-auto px-[24px] md:px-[40px]">
+              <div className="text-center mb-[40px] md:mb-[60px]">
+                <p className="font-mono text-[9px] md:text-[10px] tracking-[0.5em] uppercase text-[#8A2525] mb-[16px] flex items-center justify-center gap-2">
+                  <span className="w-1.5 h-1.5 bg-[#8A2525] rounded-full animate-pulse"></span> Classified Access Granted
                 </p>
-                <h2 className="font-serif text-[42px] md:text-[64px] font-light text-[#FDFBF7] italic">
-                  Off-Market Portfolio
-                </h2>
-                <p className="text-[#94A3B8] font-mono text-[10px] mt-4 uppercase tracking-widest">
-                  [ End-to-End Encrypted Session ]
-                </p>
+                <h2 className="font-serif text-[clamp(28px,4vw,48px)] font-light text-[#FDFBF7]">The Private Reserve</h2>
               </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-[40px]">
-                {PROPS.filter(p => p.off).map((p, i) => (
-                  <motion.div
-                    key={p.id}
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: i * 0.2 }}
-                  >
-                    <PropertyCard 
-                      property={p} 
-                      formatPrice={formatPrice} 
-                      currency={currency} 
-                      onSelect={() => {}} 
-                    />
-                  </motion.div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-[24px] md:gap-[40px]">
+                {PROPS.map(p => (
+                   <PropertyCard key={p.id} property={p} formatPrice={formatPrice} currency={currency} onSelect={(p) => { setSelectedProperty(p); goToStep(3); triggerHaptic(10); }} />
                 ))}
               </div>
             </motion.section>
           )}
+
         </AnimatePresence>
       </main>
-      {/* THE INSTITUTIONAL TERMINAL FINISH */}
       <LiveTicker />
     </div>
   );

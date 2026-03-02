@@ -1,4 +1,6 @@
-export type Currency = 'KES' | 'USD';
+
+// src/types/investment.ts
+export type Currency = 'KES' | 'USD' | 'GBP';
 export type PurchaseMode = 'cash' | 'mortgage';
 
 export interface Property {
