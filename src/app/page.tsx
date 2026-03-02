@@ -9,6 +9,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Property, PurchaseMode } from '@/types/investment';
 import Image from 'next/image';
 import LiveTicker from '@/components/luxury/LiveTicker';
+import PropertyMap from '@/components/luxury/PropertyMap';
 
 const PROPS: Property[] = [
   { id: 'p1', name: 'The Westlands Sky Residence', loc: 'Westlands, Nairobi', kes: 65e6, seg: 'pent', beds: 4, baths: 4, sqm: 420, v: true, ref: 'NRB-WL-0871', off: false, feats: ['Full-floor layout', 'Smart home', '4 parking bays'], em: '', g: '#121A2F, #1E293B' },
@@ -56,7 +57,6 @@ export default function InvestmentPortal() {
   const activeChart = chartData[horizon];
 
   return (
-    // 80% GLOBAL ZOOM APPLIED ON LOAD
     <div className="min-h-screen pb-[100px] bg-[#080D19] text-[#FDFBF7] overflow-x-hidden" style={{ zoom: '0.8' }}>
       
       <div className={`top-scroll-mask transition-opacity duration-700 ease-in-out ${isScrolled ? 'opacity-100' : 'opacity-0 pointer-events-none'}`} />
@@ -65,7 +65,6 @@ export default function InvestmentPortal() {
         
         <div className={`flex transition-all duration-[800ms] ease-[cubic-bezier(0.16,1,0.3,1)] w-full max-w-[1400px] mx-auto px-[24px] md:px-[60px] ${isScrolled ? 'flex-row justify-between items-center' : 'flex-col items-center justify-center h-full'}`}>
           
-          {/* LOGO & BRAND IDENTITY (Left side when scrolled) */}
           <div 
             className={`flex items-center cursor-pointer transition-all duration-700 ${isScrolled ? 'gap-4' : 'flex-col'}`} 
             onClick={() => goToStep(1)}
@@ -81,15 +80,12 @@ export default function InvestmentPortal() {
                 Leentone Solutions
               </div>
               
-              {/* EXACTLY 40px (~1cm) GAP ABOVE NAIROBI. Disappears cleanly on scroll. */}
               <div className={`font-mono text-[10px] tracking-[0.8em] uppercase text-[#B89B5E] ml-[0.8em] transition-all duration-[600ms] overflow-hidden ${isScrolled ? 'max-h-0 opacity-0 mt-0' : 'max-h-[40px] opacity-90 mt-[40px]'}`}>
                 NAIROBI
               </div>
             </div>
           </div>
 
-          {/* RIGHT SIDE: ROMAN NUMERALS + CURRENCY */}
-          {/* This entire wrapper shrinks to 0 width/opacity when NOT scrolled! */}
           <div className={`transition-all duration-[800ms] ease-[cubic-bezier(0.16,1,0.3,1)] overflow-hidden flex items-center ${isScrolled ? 'max-w-[1000px] opacity-100 ml-auto' : 'max-w-0 opacity-0 ml-0 pointer-events-none'}`}>
             
             <nav className="flex items-center gap-4 sm:gap-6 md:gap-10 w-max">
@@ -97,19 +93,16 @@ export default function InvestmentPortal() {
                 <button 
                   key={item.s} 
                   onClick={() => { goToStep(item.s); triggerHaptic(5); }} 
-                  // Items are permanently side-by-side with clear labels
                   className="group flex items-center relative flex-row gap-2"
                 >
                   <span className={`font-serif leading-none transition-all duration-500 ${step === item.s ? 'text-[#B89B5E]' : 'text-[#94A3B8] group-hover:text-[#FDFBF7]'} text-[18px] md:text-[22px]`}>
                     {item.r}
                   </span>
                   
-                  {/* Labels are highly visible and permanent next to numerals */}
                   <span className={`font-mono tracking-[0.1em] leading-none uppercase transition-all duration-500 flex ${step === item.s ? 'text-[#FDFBF7]' : 'text-[#94A3B8]'} text-[9px] md:text-[11px]`}>
                     {item.l}
                   </span>
                   
-                  {/* Active Underline */}
                   {step === item.s && (
                     <motion.div 
                       layoutId="navActive" 
@@ -120,7 +113,6 @@ export default function InvestmentPortal() {
               ))}
             </nav>
 
-            {/* CURRENCY TOGGLE - Slotted cleanly next to navigation */}
             <div className="hidden lg:flex items-center ml-8 pl-8 border-l border-[#1E293B]">
                <div onClick={() => setCurrency(currency === 'KES' ? 'USD' : 'KES')} className="text-[10px] font-mono cursor-pointer opacity-60 hover:opacity-100 px-3 py-1.5 border border-[#1E293B] rounded-[2px] transition-colors">
                  {currency}
@@ -132,11 +124,9 @@ export default function InvestmentPortal() {
         </div>
       </header>
 
-      {/* Main Content */}
       <main className="pt-[250px] md:pt-[540px]">
         <AnimatePresence mode="wait">
           
-          {/* STEP 1: CONTEXT */}
           {step === 1 && (
             <motion.section key="s1" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
               
@@ -263,13 +253,15 @@ export default function InvestmentPortal() {
             </motion.section>
           )}
 
-          {/* STEP 2: PORTFOLIO */}
           {step === 2 && (
             <motion.section key="s2" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={luxuryTransition} className="max-w-[1200px] mx-auto px-[24px] md:px-[40px]">
               <div className="text-center mb-[40px] md:mb-[60px]">
                 <p className="font-mono text-[9px] md:text-[10px] tracking-[0.5em] uppercase text-[#B89B5E] mb-[16px]">Step II — Selection</p>
                 <h2 className="font-serif text-[clamp(28px,4vw,48px)] font-light text-[#FDFBF7]">The Prime Collection</h2>
               </div>
+
+                   <PropertyMap />
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-[24px] md:gap-[40px]">
                 {PROPS.filter(p => !p.off || (step as number) === 5).map(p => (
                    <PropertyCard key={p.id} property={p} formatPrice={formatPrice} currency={currency} onSelect={(p) => { setSelectedProperty(p); goToStep(3); triggerHaptic(10); }} />
@@ -278,7 +270,6 @@ export default function InvestmentPortal() {
             </motion.section>
           )}
           
-          {/* STEP 3: ANALYSIS */}
           {step === 3 && (
              <motion.section key="s3" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={luxuryTransition} className="max-w-[1000px] mx-auto px-[20px] md:px-[24px]">
                <div className="text-center mb-8 md:mb-10">
@@ -324,7 +315,6 @@ export default function InvestmentPortal() {
              </motion.section>
           )}
 
-          {/* STEP 4: INQUIRY */}
           {step === 4 && (
              <motion.section key="s4" className="max-w-[600px] mx-auto pt-4 md:pt-10 px-[24px]">
                 <div className="text-center mb-10">
@@ -335,7 +325,6 @@ export default function InvestmentPortal() {
              </motion.section>
           )}
 
-          {/* STEP 5: PRIVATE RESERVE (Unlocked Portfolio) */}
           {step === 5 && (
             <motion.section key="s5" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={luxuryTransition} className="max-w-[1200px] mx-auto px-[24px] md:px-[40px]">
               <div className="text-center mb-[40px] md:mb-[60px]">
@@ -344,6 +333,9 @@ export default function InvestmentPortal() {
                 </p>
                 <h2 className="font-serif text-[clamp(28px,4vw,48px)] font-light text-[#FDFBF7]">The Private Reserve</h2>
               </div>
+
+                 <PropertyMap />
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-[24px] md:gap-[40px]">
                 {PROPS.map(p => (
                    <PropertyCard key={p.id} property={p} formatPrice={formatPrice} currency={currency} onSelect={(p) => { setSelectedProperty(p); goToStep(3); triggerHaptic(10); }} />

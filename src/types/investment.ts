@@ -1,14 +1,9 @@
-
-// src/types/investment.ts
-export type Currency = 'KES' | 'USD' | 'GBP';
-export type PurchaseMode = 'cash' | 'mortgage';
-
 export interface Property {
   id: string;
   name: string;
   loc: string;
   kes: number;
-  seg: 'pent' | 'vil';
+  seg: 'pent' | 'vil' | 'apt';
   beds: number;
   baths: number;
   sqm: number;
@@ -19,3 +14,5 @@ export interface Property {
   em: string;
   g: string;
 }
+
+export type PurchaseMode = 'cash' | 'mortgage';
