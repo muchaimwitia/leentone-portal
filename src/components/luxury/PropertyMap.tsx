@@ -18,17 +18,21 @@ const LOCATIONS: Record<string, MapLocation> = {
 
 type LocationKey = keyof typeof LOCATIONS;
 
-// Define a minimal interface for the map object to satisfy TypeScript
-interface MapLibreInstance {
-  remove: () => void;
-  resize: () => void;
-  on: (event: string, cb: () => void) => void;
-  flyTo: (options: { center: [number, number]; zoom: number; speed: number; curve: number; essential: boolean }) => void;
+// Define the interface for the global window object safely
+interface MapLibreWindow extends Window {
+  maplibregl?: any;
 }
 
 export default function PropertyMap() {
   const mapContainer = useRef<HTMLDivElement>(null);
-  const mapInstance = useRef<MapLibreInstance | null>(null);
+  // Using unknown and casting locally to avoid 'any' errors in global scope
+  const mapInstance = useRef<null | { 
+    remove: () => void; 
+    flyTo: (options: object) => void;
+    resize: () => void;
+    on: (event: string, cb: () => void) => void;
+  }>(null);
+  
   const [activeFilter, setActiveFilter] = useState<LocationKey>('nairobi');
 
   useEffect(() => {
@@ -45,19 +49,17 @@ export default function PropertyMap() {
       script.id = 'maplibre-js';
       script.src = 'https://unpkg.com/maplibre-gl@4.5.0/dist/maplibre-gl.js';
       script.async = true;
-      script.onload = initMap;
+      script.onload = () => initMap();
       document.head.appendChild(script);
-    } else if ((window as any).maplibregl) {
+    } else {
       initMap();
     }
 
     function initMap() {
-      if (!mapContainer.current || mapInstance.current) return;
-      
-      const maplibregl = (window as any).maplibregl;
-      if (!maplibregl) return;
+      const win = window as unknown as MapLibreWindow;
+      if (!mapContainer.current || mapInstance.current || !win.maplibregl) return;
 
-      const map = new maplibregl.Map({
+      const map = new win.maplibregl.Map({
         container: mapContainer.current,
         style: 'https://tiles.openfreemap.org/styles/positron',
         center: [LOCATIONS.nairobi.lng, LOCATIONS.nairobi.lat],
@@ -75,18 +77,20 @@ export default function PropertyMap() {
             <div style="width: 0; height: 0; border-left: 6px solid transparent; border-right: 6px solid transparent; border-top: 8px solid #B89B5E; margin-top: -2px;"></div>
           </div>
         `;
-        new maplibregl.Marker({ element: el }).setLngLat([lng, lat]).addTo(map);
+        new win.maplibregl.Marker({ element: el }).setLngLat([lng, lat]).addTo(map);
       };
 
       map.on('load', () => {
-        addBrandedMarker(LOCATIONS.westlands.lng, LOCATIONS.westlands.lat);
-        addBrandedMarker(LOCATIONS.lavington.lng, LOCATIONS.lavington.lat);
-        addBrandedMarker(LOCATIONS.riverside.lng, LOCATIONS.riverside.lat);
-        addBrandedMarker(LOCATIONS.karen.lng, LOCATIONS.karen.lat);
+        Object.keys(LOCATIONS).forEach(key => {
+          if (key !== 'nairobi') {
+            const l = LOCATIONS[key as LocationKey];
+            addBrandedMarker(l.lng, l.lat);
+          }
+        });
         map.resize();
       });
 
-      mapInstance.current = map as MapLibreInstance;
+      mapInstance.current = map;
     }
 
     return () => {
@@ -104,7 +108,6 @@ export default function PropertyMap() {
         center: [loc.lng, loc.lat],
         zoom: loc.zoom,
         speed: 1.2,
-        curve: 1.4,
         essential: true
       });
     }
