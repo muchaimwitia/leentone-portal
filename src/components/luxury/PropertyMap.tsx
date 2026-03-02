@@ -18,21 +18,29 @@ const LOCATIONS: Record<string, MapLocation> = {
 
 type LocationKey = keyof typeof LOCATIONS;
 
-// Define the interface for the global window object safely
+// THE FIX: We define the window structure without using 'any'
 interface MapLibreWindow extends Window {
-  maplibregl?: any;
+  maplibregl?: {
+    Map: new (options: object) => MapInstance;
+    Marker: new (options: { element: HTMLElement }) => MarkerInstance;
+  };
+}
+
+interface MapInstance {
+  remove: () => void;
+  flyTo: (options: object) => void;
+  resize: () => void;
+  on: (event: string, cb: () => void) => void;
+}
+
+interface MarkerInstance {
+  setLngLat: (coords: [number, number]) => MarkerInstance;
+  addTo: (map: MapInstance) => MarkerInstance;
 }
 
 export default function PropertyMap() {
   const mapContainer = useRef<HTMLDivElement>(null);
-  // Using unknown and casting locally to avoid 'any' errors in global scope
-  const mapInstance = useRef<null | { 
-    remove: () => void; 
-    flyTo: (options: object) => void;
-    resize: () => void;
-    on: (event: string, cb: () => void) => void;
-  }>(null);
-  
+  const mapInstance = useRef<MapInstance | null>(null);
   const [activeFilter, setActiveFilter] = useState<LocationKey>('nairobi');
 
   useEffect(() => {
@@ -56,6 +64,7 @@ export default function PropertyMap() {
     }
 
     function initMap() {
+      // Use type assertion to avoid the 'any' error
       const win = window as unknown as MapLibreWindow;
       if (!mapContainer.current || mapInstance.current || !win.maplibregl) return;
 
@@ -68,6 +77,7 @@ export default function PropertyMap() {
       });
 
       const addBrandedMarker = (lng: number, lat: number) => {
+        if (!win.maplibregl) return;
         const el = document.createElement('div');
         el.innerHTML = `
           <div style="display: flex; flex-direction: column; align-items: center;">
