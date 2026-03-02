@@ -56,7 +56,7 @@ export default function InquiryForm({ onComplete, triggerHaptic }: Props) {
              <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=300&auto=format&fit=crop')] bg-cover bg-center grayscale mix-blend-luminosity opacity-80"></div>
           </div>
           
-          <h3 className="font-serif text-[24px] text-[#FDFBF7] leading-tight mb-2">Muchai Mwitia</h3>
+          <h3 className="font-serif text-[24px] text-[#FDFBF7] leading-tight mb-2">Aileen Mucangi</h3>
           <p className="font-mono text-[9px] tracking-[0.1em] text-[#94A3B8] uppercase mb-[24px]">Principal Director, Private Clients</p>
           
           <div className="w-[30px] h-[1px] bg-[#B89B5E] mb-[24px]"></div>

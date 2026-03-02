@@ -6,7 +6,7 @@ import { Property } from '@/types/investment';
 interface PropertyCardProps {
   property: Property;
   formatPrice: (kes: number) => string;
-  currency: any; 
+  currency: string; // Changed from any to string
   onSelect: (p: Property) => void;
 }
 

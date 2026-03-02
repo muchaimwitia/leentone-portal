@@ -7,7 +7,6 @@ import InquiryForm from '@/components/luxury/InquiryForm';
 import MagneticButton from '@/components/luxury/MagneticButton';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Property, PurchaseMode } from '@/types/investment';
-import Image from 'next/image';
 import LiveTicker from '@/components/luxury/LiveTicker';
 import PropertyMap from '@/components/luxury/PropertyMap';
 
