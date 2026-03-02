@@ -18,9 +18,17 @@ const LOCATIONS: Record<string, MapLocation> = {
 
 type LocationKey = keyof typeof LOCATIONS;
 
+// Define a minimal interface for the map object to satisfy TypeScript
+interface MapLibreInstance {
+  remove: () => void;
+  resize: () => void;
+  on: (event: string, cb: () => void) => void;
+  flyTo: (options: { center: [number, number]; zoom: number; speed: number; curve: number; essential: boolean }) => void;
+}
+
 export default function PropertyMap() {
   const mapContainer = useRef<HTMLDivElement>(null);
-  const mapInstance = useRef<unknown>(null);
+  const mapInstance = useRef<MapLibreInstance | null>(null);
   const [activeFilter, setActiveFilter] = useState<LocationKey>('nairobi');
 
   useEffect(() => {
@@ -45,7 +53,9 @@ export default function PropertyMap() {
 
     function initMap() {
       if (!mapContainer.current || mapInstance.current) return;
+      
       const maplibregl = (window as any).maplibregl;
+      if (!maplibregl) return;
 
       const map = new maplibregl.Map({
         container: mapContainer.current,
@@ -57,7 +67,6 @@ export default function PropertyMap() {
 
       const addBrandedMarker = (lng: number, lat: number) => {
         const el = document.createElement('div');
-        el.className = 'branded-pin';
         el.innerHTML = `
           <div style="display: flex; flex-direction: column; align-items: center;">
             <div style="width: 32px; height: 32px; background: #080D19; border: 2px solid #B89B5E; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.5); overflow: hidden;">
@@ -70,18 +79,19 @@ export default function PropertyMap() {
       };
 
       map.on('load', () => {
-        Object.values(LOCATIONS).forEach(loc => {
-           if(loc.zoom > 11) addBrandedMarker(loc.lng, loc.lat);
-        });
+        addBrandedMarker(LOCATIONS.westlands.lng, LOCATIONS.westlands.lat);
+        addBrandedMarker(LOCATIONS.lavington.lng, LOCATIONS.lavington.lat);
+        addBrandedMarker(LOCATIONS.riverside.lng, LOCATIONS.riverside.lat);
+        addBrandedMarker(LOCATIONS.karen.lng, LOCATIONS.karen.lat);
         map.resize();
       });
 
-      mapInstance.current = map;
+      mapInstance.current = map as MapLibreInstance;
     }
 
     return () => {
       if (mapInstance.current) {
-        (mapInstance.current as any).remove();
+        mapInstance.current.remove();
         mapInstance.current = null;
       }
     };
@@ -90,10 +100,11 @@ export default function PropertyMap() {
   useEffect(() => {
     if (mapInstance.current) {
       const loc = LOCATIONS[activeFilter];
-      (mapInstance.current as any).flyTo({
+      mapInstance.current.flyTo({
         center: [loc.lng, loc.lat],
         zoom: loc.zoom,
         speed: 1.2,
+        curve: 1.4,
         essential: true
       });
     }
@@ -102,10 +113,10 @@ export default function PropertyMap() {
   return (
     <div className="w-full mb-12 flex flex-col gap-4">
       <div className="flex flex-wrap gap-2">
-        {Object.keys(LOCATIONS).map((loc) => (
+        {(Object.keys(LOCATIONS) as LocationKey[]).map((loc) => (
           <button
             key={loc}
-            onClick={() => setActiveFilter(loc as LocationKey)}
+            onClick={() => setActiveFilter(loc)}
             className={`px-4 py-2 text-[9px] uppercase tracking-widest font-mono transition-all border rounded-[2px] ${
               activeFilter === loc 
                 ? 'bg-[#B89B5E] text-[#080D19] border-[#B89B5E]' 

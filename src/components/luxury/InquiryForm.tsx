@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { motion } from 'framer-motion';
+// Removed unused 'motion' import to satisfy linter
 import MagneticButton from '@/components/luxury/MagneticButton';
 
 interface Props {
@@ -19,7 +19,6 @@ export default function InquiryForm({ onComplete, triggerHaptic }: Props) {
     setIsSubmitting(true);
 
     try {
-      // Send secure POST request to our new API route
       const response = await fetch('/api/inquiry', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -28,7 +27,6 @@ export default function InquiryForm({ onComplete, triggerHaptic }: Props) {
 
       if (!response.ok) throw new Error('Transmission failed');
 
-      // Add a slight delay for the luxury UI feel
       setTimeout(() => {
         setIsSubmitting(false);
         triggerHaptic([10, 50, 10]);
@@ -38,7 +36,6 @@ export default function InquiryForm({ onComplete, triggerHaptic }: Props) {
     } catch (error) {
       console.error('Inquiry failed:', error);
       setIsSubmitting(false);
-      // In a full production app, you would show a subtle error toast here
     }
   };
 
@@ -62,7 +59,7 @@ export default function InquiryForm({ onComplete, triggerHaptic }: Props) {
           <div className="w-[30px] h-[1px] bg-[#B89B5E] mb-[24px]"></div>
           
           <p className="text-[13px] text-[#94A3B8] leading-[1.8] font-light italic">
-            "Acquisition is not merely about the asset; it is about absolute legal certainty and structural integrity. I look forward to engineering your portfolio."
+            &quot;Acquisition is not merely about the asset; it is about absolute legal certainty and structural integrity. I look forward to engineering your portfolio.&quot;
           </p>
         </div>
       </div>
@@ -116,7 +113,14 @@ export default function InquiryForm({ onComplete, triggerHaptic }: Props) {
           </div>
 
           <div className="mt-[48px]">
-            <MagneticButton className={`w-full py-[18px] bg-[#FDFBF7] text-[#080D19] rounded-[2px] font-mono text-[10px] tracking-[0.4em] uppercase transition-all duration-500 relative overflow-hidden ${isSubmitting ? 'bg-[#1E293B] text-[#FDFBF7]' : 'hover:bg-[#B89B5E] hover:text-[#FDFBF7]'}`}>
+            <p className="text-[10px] text-[#94A3B8] font-mono mb-6 leading-relaxed opacity-60">
+              By submitting, you agree to our &quot;Private Advisory Protocols&quot; regarding data encryption and discretionary contact.
+            </p>
+            <button 
+              type="submit"
+              disabled={isSubmitting}
+              className={`w-full py-[18px] bg-[#FDFBF7] text-[#080D19] rounded-[2px] font-mono text-[10px] tracking-[0.4em] uppercase transition-all duration-500 relative overflow-hidden ${isSubmitting ? 'bg-[#1E293B] text-[#FDFBF7] opacity-50 cursor-not-allowed' : 'hover:bg-[#B89B5E] hover:text-[#FDFBF7]'}`}
+            >
               {isSubmitting ? (
                 <span className="flex items-center justify-center gap-3">
                   <span className="animate-spin font-serif text-[14px] leading-none text-[#B89B5E]">⚬</span> Establishing Secure Line
@@ -124,7 +128,7 @@ export default function InquiryForm({ onComplete, triggerHaptic }: Props) {
               ) : (
                 "Request Private Consultation"
               )}
-            </MagneticButton>
+            </button>
           </div>
         </form>
       </div>
