@@ -125,35 +125,86 @@ export default function InvestmentPortal() {
 
       <main className="pt-[250px] md:pt-[540px]">
         <AnimatePresence mode="wait">
-          
-          {step === 1 && (
+         {step === 1 && (
   <motion.section key="s1" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
 
     {/* ── HERO ── */}
-    <div className="relative w-full min-h-[60vh] md:min-h-[70vh] flex items-center justify-center pt-[40px] md:pt-[60px] pb-[60px] md:pb-[80px] mb-[60px] md:mb-[120px] overflow-hidden bg-[#080D19]">
-      <div className="absolute inset-0 z-[1] pointer-events-none">
-        <motion.div
-          initial={{ scale: 1.1, opacity: 0 }}
-          animate={{ scale: 1, opacity: 0.4 }}
-          transition={{ duration: 2.5, ease: "easeOut" }}
-          className="w-full h-full"
+    <div
+      style={{
+        position: 'relative',
+        width: '100%',
+        minHeight: 'clamp(60vh, 80vh, 90vh)',
+        overflow: 'hidden',
+        backgroundColor: '#080D19',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',  /* top text + bottom text at opposite ends */
+      }}
+    >
+      {/* Full-bleed background image */}
+      <motion.div
+        initial={{ scale: 1.1, opacity: 0 }}
+        animate={{ scale: 1, opacity: 0.4 }}
+        transition={{ duration: 2.5, ease: "easeOut" }}
+        style={{ position: 'absolute', inset: 0, zIndex: 1, pointerEvents: 'none' }}
+      >
+        <img
+          src="/skyline.jpg"
+          alt="Nairobi"
+          style={{
+            position: 'absolute',
+            inset: 0,
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            objectPosition: 'center center',
+          }}
+        />
+      </motion.div>
+
+      {/* Gradient overlays */}
+      <div style={{ position: 'absolute', inset: 0, zIndex: 2, pointerEvents: 'none', background: 'linear-gradient(to bottom, #080D19 0%, transparent 35%, transparent 65%, #080D19 100%)' }} />
+      <div style={{ position: 'absolute', inset: 0, zIndex: 2, pointerEvents: 'none', backgroundColor: 'rgba(8,13,25,0.25)' }} />
+
+      {/* ── TOP THIRD: eyebrow sentence ── */}
+      <div style={{ position: 'relative', zIndex: 10, padding: 'clamp(32px,6vw,64px) clamp(24px,5vw,80px) 0', textAlign: 'center' }}>
+        <motion.p
+          initial={{ opacity: 0, y: -16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 0.4 }}
+          style={{
+            fontFamily: 'monospace',
+            fontSize: 'clamp(8px,1.2vw,11px)',
+            letterSpacing: '0.45em',
+            textTransform: 'uppercase',
+            color: '#B89B5E',
+            margin: 0,
+            lineHeight: 1.8,
+          }}
         >
-          <img src="/skyline.jpg" alt="Nairobi" className="w-full h-full object-cover object-center" />
-        </motion.div>
+          Luxury Real Estate Acquisition With Leenstone End-to-End Private Institutional Path
+        </motion.p>
       </div>
-      <div className="absolute inset-0 z-[2] pointer-events-none bg-gradient-to-b from-[#080D19] via-transparent to-[#080D19]" />
-      <div className="absolute inset-0 z-[2] pointer-events-none bg-[#080D19]/30" />
-      <div className="relative z-[10] max-w-[1100px] w-full px-[24px] md:px-[40px] text-center">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.5 }}>
-          <p className="font-mono text-[9px] md:text-[10px] tracking-[0.5em] uppercase text-[#B89B5E] mb-[20px] md:mb-[24px]">Private Institutional Path</p>
-          <h1 className="font-serif text-[clamp(32px,6vw,84px)] font-light leading-[1.1] text-[#FDFBF7] tracking-[-0.02em] mb-[24px] md:mb-[32px]">
-            Luxury Real Estate Acquisition
-          </h1>
-          <p className="text-[13px] md:text-[16px] text-[#94A3B8] max-w-[750px] mx-auto leading-[1.8] font-light">
-            Purchasing a built or off-plan property — apartment, penthouse, or villa — involves distinct legal,
-            structural, and management due diligence steps beyond a standard title search.
-          </p>
-        </motion.div>
+
+      {/* ── BOTTOM THIRD: descriptor paragraph ── */}
+      <div style={{ position: 'relative', zIndex: 10, padding: '0 clamp(24px,5vw,80px) clamp(40px,7vw,72px)', textAlign: 'center' }}>
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 0.6 }}
+          style={{
+            fontFamily: 'sans-serif',
+            fontSize: 'clamp(12px,1.5vw,16px)',
+            color: '#94A3B8',
+            maxWidth: '750px',
+            margin: '0 auto',
+            lineHeight: 1.8,
+            fontWeight: 300,
+          }}
+        >
+          Purchasing a built or off-plan property — apartment, penthouse, or villa — involves distinct legal,
+          structural, and management due diligence steps beyond a standard title search.
+        </motion.p>
       </div>
     </div>
 
@@ -182,7 +233,7 @@ export default function InvestmentPortal() {
           color: '#B89B5E',
           marginBottom: '6px',
         }}>
-          The Legal Protocol
+          The Leentone Solutions Legal Protocol
         </p>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', gap: '8px' }}>
           <h2 style={{
@@ -354,7 +405,6 @@ export default function InvestmentPortal() {
                 {row.step.n}
               </span>
               <div style={{ flex: 1, minWidth: 0 }}>
-                {/* Title and tag stacked on mobile via flexDirection column */}
                 <div style={{
                   display: 'flex',
                   flexDirection: 'column',
@@ -485,7 +535,6 @@ export default function InvestmentPortal() {
 
   </motion.section>
 )}
-
           {step === 2 && (
             <motion.section key="s2" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={luxuryTransition} className="max-w-[1200px] mx-auto px-[24px] md:px-[40px]">
               <div className="text-center mb-[40px] md:mb-[60px]">
