@@ -183,7 +183,7 @@
   /* Placed exactly at 40% of the screen width */
   left: 40%; 
   /* Scaled to exactly 50% size while maintaining crispness */
-  transform: translateX(-40%) scale(0.6) translateZ(0); 
+  transform: translateX(-57%) scale(0.6) translateZ(0); 
   
   background: rgba(255, 255, 255, 0.03);
   backdrop-filter: blur(24px);

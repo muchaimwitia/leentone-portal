@@ -25,16 +25,17 @@ export default function InvestmentPortal() {
   const [horizon, setHorizon] = useState<5|10|15>(10);
   const [dlState, setDlState] = useState<'idle'|'compiling'|'watermarking'|'ready'>('idle');
   const [activeStepHover, setActiveStepHover] = useState<number | null>(null);
-
   const [isScrolled, setIsScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);  {/* ← new */}
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
-    };
+    const handleScroll = () => setIsScrolled(window.scrollY > 20);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Close mobile menu on step change
+  useEffect(() => { setMobileMenuOpen(false); }, [step]);
 
   const handleDownload = () => {
     if (dlState !== 'idle') return;
@@ -55,15 +56,21 @@ export default function InvestmentPortal() {
   };
   const activeChart = chartData[horizon];
 
+  const NAV_ITEMS = [{s:1,l:'Context',r:'I'},{s:2,l:'Portfolio',r:'II'},{s:3,l:'Analysis',r:'III'},{s:4,l:'Inquiry',r:'IV'},{s:5,l:'Private',r:'V'}];
+
   return (
     <div className="min-h-screen pb-[100px] bg-[#080D19] text-[#FDFBF7] overflow-x-hidden" style={{ zoom: '0.8' }}>
       
       <div className={`top-scroll-mask transition-opacity duration-700 ease-in-out ${isScrolled ? 'opacity-100' : 'opacity-0 pointer-events-none'}`} />
 
+      {/* ══════════════════════════════════════════════
+          HEADER
+      ══════════════════════════════════════════════ */}
       <header className={`glass-header z-[500] flex items-center ${isScrolled ? 'header-scrolled' : 'header-island'}`}>
         
         <div className={`flex transition-all duration-[800ms] ease-[cubic-bezier(0.16,1,0.3,1)] w-full max-w-[1400px] mx-auto px-[24px] md:px-[60px] ${isScrolled ? 'flex-row justify-between items-center' : 'flex-col items-center justify-center h-full'}`}>
           
+          {/* Logo */}
           <div 
             className={`flex items-center cursor-pointer transition-all duration-700 ${isScrolled ? 'gap-4' : 'flex-col'}`} 
             onClick={() => goToStep(1)}
@@ -78,17 +85,16 @@ export default function InvestmentPortal() {
               <div className={`font-serif tracking-[0.05em] text-[#FDFBF7] leading-none transition-all duration-700 ${isScrolled ? 'text-[18px] hidden sm:block' : 'text-[34px]'}`}>
                 Leentone Solutions
               </div>
-              
               <div className={`font-mono text-[10px] tracking-[0.8em] uppercase text-[#B89B5E] ml-[0.8em] transition-all duration-[600ms] overflow-hidden ${isScrolled ? 'max-h-0 opacity-0 mt-0' : 'max-h-[40px] opacity-90 mt-[40px]'}`}>
                 NAIROBI
               </div>
             </div>
           </div>
 
-          <div className={`transition-all duration-[800ms] ease-[cubic-bezier(0.16,1,0.3,1)] overflow-hidden flex items-center ${isScrolled ? 'max-w-[1000px] opacity-100 ml-auto' : 'max-w-0 opacity-0 ml-0 pointer-events-none'}`}>
-            
+          {/* ── DESKTOP NAV (unchanged, hidden on mobile) ── */}
+          <div className={`hidden md:flex transition-all duration-[800ms] ease-[cubic-bezier(0.16,1,0.3,1)] overflow-hidden items-center ${isScrolled ? 'max-w-[1000px] opacity-100 ml-auto' : 'max-w-0 opacity-0 ml-0 pointer-events-none'}`}>
             <nav className="flex items-center gap-4 sm:gap-6 md:gap-10 w-max">
-              {[{s:1,l:'Context',r:'I'},{s:2,l:'Portfolio',r:'II'},{s:3,l:'Analysis',r:'III'},{s:4,l:'Inquiry',r:'IV'},{s:5,l:'Private',r:'V'}].map((item) => (
+              {NAV_ITEMS.map((item) => (
                 <button 
                   key={item.s} 
                   onClick={() => { goToStep(item.s); triggerHaptic(5); }} 
@@ -97,11 +103,9 @@ export default function InvestmentPortal() {
                   <span className={`font-serif leading-none transition-all duration-500 ${step === item.s ? 'text-[#B89B5E]' : 'text-[#94A3B8] group-hover:text-[#FDFBF7]'} text-[18px] md:text-[22px]`}>
                     {item.r}
                   </span>
-                  
                   <span className={`font-mono tracking-[0.1em] leading-none uppercase transition-all duration-500 flex ${step === item.s ? 'text-[#FDFBF7]' : 'text-[#94A3B8]'} text-[9px] md:text-[11px]`}>
                     {item.l}
                   </span>
-                  
                   {step === item.s && (
                     <motion.div 
                       layoutId="navActive" 
@@ -111,17 +115,86 @@ export default function InvestmentPortal() {
                 </button>
               ))}
             </nav>
-
             <div className="hidden lg:flex items-center ml-8 pl-8 border-l border-[#1E293B]">
-               <div onClick={() => setCurrency(currency === 'KES' ? 'USD' : 'KES')} className="text-[10px] font-mono cursor-pointer opacity-60 hover:opacity-100 px-3 py-1.5 border border-[#1E293B] rounded-[2px] transition-colors">
-                 {currency}
-               </div>
+              <div onClick={() => setCurrency(currency === 'KES' ? 'USD' : 'KES')} className="text-[10px] font-mono cursor-pointer opacity-60 hover:opacity-100 px-3 py-1.5 border border-[#1E293B] rounded-[2px] transition-colors">
+                {currency}
+              </div>
             </div>
-            
           </div>
+
+          {/* ── MOBILE HAMBURGER (only shows when scrolled, only on mobile) ── */}
+          {isScrolled && (
+            <button
+              className="md:hidden ml-auto flex flex-col justify-center items-center gap-[5px] w-[36px] h-[36px] border border-[#1E293B] rounded-[2px] bg-[#080D19] flex-shrink-0"
+              onClick={() => setMobileMenuOpen(v => !v)}
+              aria-label="Toggle menu"
+            >
+              <motion.span
+                animate={{ rotate: mobileMenuOpen ? 45 : 0, y: mobileMenuOpen ? 7 : 0 }}
+                transition={{ duration: 0.3 }}
+                className="block w-[14px] h-[1px] bg-[#B89B5E] origin-center"
+              />
+              <motion.span
+                animate={{ opacity: mobileMenuOpen ? 0 : 1 }}
+                transition={{ duration: 0.2 }}
+                className="block w-[14px] h-[1px] bg-[#B89B5E]"
+              />
+              <motion.span
+                animate={{ rotate: mobileMenuOpen ? -45 : 0, y: mobileMenuOpen ? -7 : 0 }}
+                transition={{ duration: 0.3 }}
+                className="block w-[14px] h-[1px] bg-[#B89B5E] origin-center"
+              />
+            </button>
+          )}
 
         </div>
       </header>
+
+      {/* ── MOBILE DROPDOWN MENU ── */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -12 }}
+            transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+            className="md:hidden fixed top-[60px] left-0 right-0 z-[490] bg-[#080D19]/95 backdrop-blur-[16px] border-b border-[#1E293B]"
+          >
+            <nav className="flex flex-col w-full">
+              {NAV_ITEMS.map((item, i) => (
+                <motion.button
+                  key={item.s}
+                  initial={{ opacity: 0, x: -8 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.05 }}
+                  onClick={() => { goToStep(item.s); triggerHaptic(5); setMobileMenuOpen(false); }}
+                  className={`flex items-center gap-4 px-[24px] py-[16px] border-b border-[#1E293B] w-full text-left transition-colors duration-300 ${step === item.s ? 'bg-[#121A2F]' : 'hover:bg-[#0d1526]'}`}
+                >
+                  <span className={`font-serif text-[20px] leading-none flex-shrink-0 ${step === item.s ? 'text-[#B89B5E]' : 'text-[#2a3a5c]'}`}>
+                    {item.r}
+                  </span>
+                  <span className={`font-mono text-[10px] tracking-[0.3em] uppercase ${step === item.s ? 'text-[#FDFBF7]' : 'text-[#94A3B8]'}`}>
+                    {item.l}
+                  </span>
+                  {step === item.s && (
+                    <span className="ml-auto w-1.5 h-1.5 rounded-full bg-[#B89B5E] flex-shrink-0" />
+                  )}
+                </motion.button>
+              ))}
+              {/* Currency toggle at bottom of mobile menu */}
+              <div className="px-[24px] py-[14px] flex items-center justify-between">
+                <span className="font-mono text-[9px] tracking-[0.3em] uppercase text-[#64748B]">Currency</span>
+                <div
+                  onClick={() => setCurrency(currency === 'KES' ? 'USD' : 'KES')}
+                  className="font-mono text-[10px] cursor-pointer text-[#B89B5E] border border-[#1E293B] px-3 py-1.5 rounded-[2px] hover:border-[#B89B5E] transition-colors"
+                >
+                  {currency}
+                </div>
+              </div>
+            </nav>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <main className="pt-[250px] md:pt-[540px]">
         <AnimatePresence mode="wait">
@@ -138,7 +211,7 @@ export default function InvestmentPortal() {
         backgroundColor: '#080D19',
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'space-between',  /* top text + bottom text at opposite ends */
+        justifyContent: 'space-between',
       }}
     >
       {/* Full-bleed background image */}
@@ -332,7 +405,7 @@ export default function InvestmentPortal() {
         },
         {
           step: { n: '03', t: 'Execute Sale Agreement (SPA)',        d: "Review the SPA for unit specifics, parking, and completion clauses. A 10% deposit must be held in the advocate's regulated client account.",                                      tag: 'Advocates Accounts Rules'      },
-          flag: { t: 'Ambiguous or Predatory Contracts',    d: 'The SPA lacks a fixed completion date, omits specific parking/storage rights, or demands the deposit be paid directly to the developer’s business account.'       },
+          flag: { t: 'Ambiguous or Predatory Contracts',    d: 'The SPA lacks a fixed completion date, omits specific parking/storage rights, or demands the deposit be paid directly to the developers business account.'       },
         },
         {
           step: { n: '04', t: 'Obtain Occupation Certificate (OC)', d: 'Demand the Occupation Certificate issued by the County Government confirming habitability. Never release final payment without it.',                                               tag: 'Physical Planning Act 2019'    },
@@ -352,7 +425,7 @@ export default function InvestmentPortal() {
         },
         {
           step: { n: '08', t: 'Lodge Transfer of Title',            d: "Lodge the Transfer Instrument with the original title and clearances. The Registrar cancels the seller's title and issues a new Sectional Title in your name.",                   tag: 'Land Registration Act 2012'    },
-          flag: { t: 'Identity & Documentation Mismatch',      d: 'The names on the Title Deed do not perfectly match the Seller’s ID/KRA PIN, or the "original" title is "lost," signaling a high risk of fraudulent double-selling.'       },
+          flag: { t: 'Identity & Documentation Mismatch',      d: 'The names on the Title Deed do not perfectly match the Sellers ID/KRA PIN, or the "original" title is "lost," signaling a high risk of fraudulent double-selling.'       },
         },
       ].map((row, i) => (
         <>
