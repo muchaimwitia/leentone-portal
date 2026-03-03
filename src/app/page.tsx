@@ -182,7 +182,7 @@ export default function InvestmentPortal() {
             lineHeight: 1.8,
           }}
         >
-          Luxury Real Estate Acquisition With Leenstone End-to-End Private Institutional Path
+          Luxury Real Estate Acquisition With Leentone | End-to-End Private Institutional Path
         </motion.p>
       </div>
 
@@ -324,35 +324,35 @@ export default function InvestmentPortal() {
       {[
         {
           step: { n: '01', t: 'Verify Title via Ardhisasa',         d: 'Run a title search on Ardhisasa (Ministry of Lands). For apartments, confirm a registered Sectional Title under the Sectional Properties Act 2020.',                             tag: 'Sectional Properties Act 2020' },
-          flag: { t: 'Allotment Letters Only',         d: 'Agreements for sale or allotment letters do not constitute legal ownership under Kenyan law. Insist on a fully registered Sectional Title deed before proceeding.' },
+          flag: { t: 'Title Inaccessibility or Informal Paperwork',         d: ' The seller offers only "Letters of Allotment" or "Share Certificates" and cannot produce a verifiable record on the Ardhisasa portal.' },
         },
         {
           step: { n: '02', t: 'Engage Conveyancing Advocate',       d: 'Appoint an LSK-registered advocate specialising in residential conveyancing. Fees are regulated (typically 1.25%).',                                                              tag: 'Law Society of Kenya'          },
-          flag: { t: 'Missing Occupation Certificate', d: 'A building without a valid OC from the county government is illegal to occupy and unmortgageable. Never release final payment before the OC is in hand.'         },
+          flag: { t: 'Unregulated Legal Representation', d: ' The seller insists you use "their" lawyer for "speed," or the advocate provided is not currently practicing according to the LSK portal.'         },
         },
         {
           step: { n: '03', t: 'Execute Sale Agreement (SPA)',        d: "Review the SPA for unit specifics, parking, and completion clauses. A 10% deposit must be held in the advocate's regulated client account.",                                      tag: 'Advocates Accounts Rules'      },
-          flag: { t: 'Undisclosed Service Charges',    d: 'Hidden monthly fees of KES 50,000–200,000+ dramatically alter the true cost of ownership and rental yield. Demand a full written breakdown before signing.'       },
+          flag: { t: 'Ambiguous or Predatory Contracts',    d: 'The SPA lacks a fixed completion date, omits specific parking/storage rights, or demands the deposit be paid directly to the developer’s business account.'       },
         },
         {
           step: { n: '04', t: 'Obtain Occupation Certificate (OC)', d: 'Demand the Occupation Certificate issued by the County Government confirming habitability. Never release final payment without it.',                                               tag: 'Physical Planning Act 2019'    },
-          flag: { t: 'Encumbered Title Record',        d: 'If the Ardhisasa search reveals a bank charge or existing mortgage, the unit cannot be transferred cleanly until these are formally discharged in writing.'       },
+          flag: { t: 'Lack of Habitability Proof',        d: 'The building is physically complete but lacks a valid OC, meaning the structure is legally "non-existent" for occupancy or mortgage purposes.'       },
         },
         {
           step: { n: '05', t: 'Structural & Snagging Inspection',   d: 'Hire an independent structural engineer and quantity surveyor. Request a full snagging report cataloguing all defects before completion.',                                        tag: 'Engineers Board of Kenya'      },
-          flag: { t: 'No Established Reserve Fund',    d: 'A luxury development without a properly constituted management company, audited accounts, and funded reserve account is a serious long-term liability.'           },
+          flag: { t: 'Restricted Site Access or Hidden Defects',    d: 'The developer refuses independent inspections or limits "snagging" to cosmetic issues only, hiding potential structural or MEP (mechanical, electrical, plumbing) failures.'           },
         },
         {
           step: { n: '06', t: 'Review Management & By-Laws',        d: 'Audit the management company under the Sectional Properties Act. Review service charge schedules, reserve fund balance, and sub-letting rules.',                                  tag: 'Management Audit'              },
-          flag: { t: 'Plan Deviations',                d: 'Physically measure the unit against the registered floor plan. Discrepancies over 5% may indicate illegal subdivisions or encroachment into common areas.'        },
+          flag: { t: 'Dysfunctional Management Body',                d: 'There is no constituted Management Company or sinking fund, leaving you liable for future major repairs and unpredictable service charge hikes.'        },
         },
         {
           step: { n: '07', t: 'Clearance & Stamp Duty',             d: 'Obtain Land Rent, Land Rates, and Service Charge Clearance Certificates. Settle Stamp Duty at 4% via KRA iTax. Allow 3–6 weeks for government valuation.',                       tag: 'Stamp Duty Act · KRA iTax'     },
-          flag: { t: 'Identity Discrepancies',         d: "The registered owner's full name and national ID must exactly match the seller's government-issued ID. Any discrepancy — even minor — is a fraud signal."        },
+          flag: { t: 'Outstanding Statutory Liabilities',         d: "The land has unpaid rates or encumbrances (bank charges) that prevent the KRA from issuing a clearance, stalling your ownership indefinitely."        },
         },
         {
           step: { n: '08', t: 'Lodge Transfer of Title',            d: "Lodge the Transfer Instrument with the original title and clearances. The Registrar cancels the seller's title and issues a new Sectional Title in your name.",                   tag: 'Land Registration Act 2012'    },
-          flag: { t: 'Unlicensed Intermediaries',      d: 'An agent without an active EARB licence is illegal under Kenyan law and offers zero regulatory recourse. Verify on the EARB portal before any engagement.'       },
+          flag: { t: 'Identity & Documentation Mismatch',      d: 'The names on the Title Deed do not perfectly match the Seller’s ID/KRA PIN, or the "original" title is "lost," signaling a high risk of fraudulent double-selling.'       },
         },
       ].map((row, i) => (
         <>
