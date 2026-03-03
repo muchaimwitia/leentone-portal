@@ -158,42 +158,118 @@ export default function InvestmentPortal() {
     </div>
 
     {/* ══════════════════════════════════════════════════
-        COMPARISON TABLE — forced 2-col grid, no wrapping
+        COMPARISON TABLE — forced 2-col at ALL screen sizes
     ══════════════════════════════════════════════════ */}
-    {/* ↓ CHANGE 1: alignItems 'start' → 'stretch' so both cells in every row match height */}
-    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', width: '100%', alignItems: 'stretch' }}>
+    <div style={{
+      display: 'grid',
+      gridTemplateColumns: '1fr 1fr',
+      width: '100%',
+      alignItems: 'stretch',
+    }}>
 
       {/* ── LEFT HEADER: Legal ── */}
-      <div style={{ backgroundColor: '#0d1526', borderBottom: '1px solid #1E293B', borderRight: '1px solid #1E293B', padding: '32px 40px 24px' }}>
-        <p style={{ fontFamily: 'monospace', fontSize: '9px', letterSpacing: '0.4em', textTransform: 'uppercase', color: '#B89B5E', marginBottom: '8px' }}>
+      <div style={{
+        backgroundColor: '#0d1526',
+        borderBottom: '1px solid #1E293B',
+        borderRight: '1px solid #1E293B',
+        padding: 'clamp(16px,3vw,32px) clamp(12px,3vw,40px) clamp(12px,2vw,24px)',
+      }}>
+        <p style={{
+          fontFamily: 'monospace',
+          fontSize: 'clamp(7px,1.5vw,9px)',
+          letterSpacing: '0.3em',
+          textTransform: 'uppercase',
+          color: '#B89B5E',
+          marginBottom: '6px',
+        }}>
           The Legal Protocol
         </p>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
-          <h2 style={{ fontFamily: 'serif', fontSize: 'clamp(18px,2vw,28px)', color: '#FDFBF7', fontWeight: 300, letterSpacing: '-0.02em', lineHeight: 1.2, margin: 0 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', gap: '8px' }}>
+          <h2 style={{
+            fontFamily: 'serif',
+            fontSize: 'clamp(13px,2.5vw,28px)',
+            color: '#FDFBF7',
+            fontWeight: 300,
+            letterSpacing: '-0.02em',
+            lineHeight: 1.2,
+            margin: 0,
+          }}>
             08 Mandatory Steps
           </h2>
-          <span style={{ fontFamily: 'monospace', fontSize: '8px', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#B89B5E', border: '1px solid #1E293B', padding: '4px 10px', borderRadius: '2px', backgroundColor: '#080D19', whiteSpace: 'nowrap', marginLeft: '12px' }}>
+          <span style={{
+            fontFamily: 'monospace',
+            fontSize: 'clamp(6px,1vw,8px)',
+            letterSpacing: '0.1em',
+            textTransform: 'uppercase',
+            color: '#B89B5E',
+            border: '1px solid #1E293B',
+            padding: '3px 6px',
+            borderRadius: '2px',
+            backgroundColor: '#080D19',
+            whiteSpace: 'nowrap',
+          }}>
             Kenya Law
           </span>
         </div>
       </div>
 
       {/* ── RIGHT HEADER: Red Flags ── */}
-      <div style={{ backgroundColor: '#100808', borderBottom: '1px solid #2a1010', padding: '32px 40px 24px' }}>
-        <p style={{ fontFamily: 'monospace', fontSize: '9px', letterSpacing: '0.4em', textTransform: 'uppercase', color: '#8A2525', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <span style={{ width: '6px', height: '6px', backgroundColor: '#8A2525', borderRadius: '50%', display: 'inline-block', animation: 'pulse 2s infinite' }} />
+      <div style={{
+        backgroundColor: '#100808',
+        borderBottom: '1px solid #2a1010',
+        padding: 'clamp(16px,3vw,32px) clamp(12px,3vw,40px) clamp(12px,2vw,24px)',
+      }}>
+        <p style={{
+          fontFamily: 'monospace',
+          fontSize: 'clamp(7px,1.5vw,9px)',
+          letterSpacing: '0.3em',
+          textTransform: 'uppercase',
+          color: '#8A2525',
+          marginBottom: '6px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '6px',
+        }}>
+          <span style={{
+            width: '5px',
+            height: '5px',
+            backgroundColor: '#8A2525',
+            borderRadius: '50%',
+            display: 'inline-block',
+            flexShrink: 0,
+          }} />
           Classified Advisory
         </p>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
-          <h2 style={{ fontFamily: 'serif', fontSize: 'clamp(18px,2vw,28px)', color: '#FDFBF7', fontWeight: 300, letterSpacing: '-0.02em', lineHeight: 1.2, margin: 0 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', gap: '8px' }}>
+          <h2 style={{
+            fontFamily: 'serif',
+            fontSize: 'clamp(13px,2.5vw,28px)',
+            color: '#FDFBF7',
+            fontWeight: 300,
+            letterSpacing: '-0.02em',
+            lineHeight: 1.2,
+            margin: 0,
+          }}>
             Immediate Red Flags
           </h2>
-          <span style={{ fontFamily: 'monospace', fontSize: '8px', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#8A2525', border: '1px solid #2a1010', padding: '4px 10px', borderRadius: '2px', backgroundColor: '#0d0404', whiteSpace: 'nowrap', marginLeft: '12px' }}>
+          <span style={{
+            fontFamily: 'monospace',
+            fontSize: 'clamp(6px,1vw,8px)',
+            letterSpacing: '0.1em',
+            textTransform: 'uppercase',
+            color: '#8A2525',
+            border: '1px solid #2a1010',
+            padding: '3px 6px',
+            borderRadius: '2px',
+            backgroundColor: '#0d0404',
+            whiteSpace: 'nowrap',
+          }}>
             08 Risks
           </span>
         </div>
       </div>
 
+      {/* ══ ROWS ══ */}
       {[
         {
           step: { n: '01', t: 'Verify Title via Ardhisasa',         d: 'Run a title search on Ardhisasa (Ministry of Lands). For apartments, confirm a registered Sectional Title under the Sectional Properties Act 2020.',                             tag: 'Sectional Properties Act 2020' },
@@ -229,8 +305,7 @@ export default function InvestmentPortal() {
         },
       ].map((row, i) => (
         <>
-          {/* ── Step cell ──
-              CHANGE 2: added display flex + flexDirection column so cell fills row height */}
+          {/* ── Step cell ── */}
           <div
             key={`step-${i}`}
             onMouseEnter={() => setActiveStepHover(i)}
@@ -239,7 +314,7 @@ export default function InvestmentPortal() {
               backgroundColor: activeStepHover === i ? '#162038' : '#0f1829',
               borderBottom: '1px solid #1E293B',
               borderRight: '1px solid #1E293B',
-              padding: '24px 40px',
+              padding: 'clamp(12px,2.5vw,24px) clamp(10px,3vw,40px)',
               transition: 'background-color 0.4s ease',
               position: 'relative',
               overflow: 'hidden',
@@ -249,39 +324,91 @@ export default function InvestmentPortal() {
             }}
           >
             {/* Ghost number */}
-            <div style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', fontFamily: 'serif', fontSize: '80px', color: '#FDFBF7', opacity: 0.025, userSelect: 'none', pointerEvents: 'none', fontStyle: 'italic', lineHeight: 1 }}>
+            <div style={{
+              position: 'absolute',
+              right: '8px',
+              top: '50%',
+              transform: 'translateY(-50%)',
+              fontFamily: 'serif',
+              fontSize: 'clamp(40px,8vw,80px)',
+              color: '#FDFBF7',
+              opacity: 0.025,
+              userSelect: 'none',
+              pointerEvents: 'none',
+              fontStyle: 'italic',
+              lineHeight: 1,
+            }}>
               {row.step.n}
             </div>
 
-            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px', position: 'relative', zIndex: 1 }}>
-              <span style={{ fontFamily: 'serif', fontSize: '28px', lineHeight: 1, color: activeStepHover === i ? '#B89B5E' : '#2a3a5c', flexShrink: 0, transition: 'color 0.4s ease', marginTop: '2px' }}>
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: 'clamp(6px,1.5vw,16px)', position: 'relative', zIndex: 1 }}>
+              <span style={{
+                fontFamily: 'serif',
+                fontSize: 'clamp(16px,3vw,28px)',
+                lineHeight: 1,
+                color: activeStepHover === i ? '#B89B5E' : '#2a3a5c',
+                flexShrink: 0,
+                transition: 'color 0.4s ease',
+                marginTop: '2px',
+              }}>
                 {row.step.n}
               </span>
               <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '8px', marginBottom: '6px' }}>
-                  <h4 style={{ fontFamily: 'serif', fontSize: '15px', color: '#FDFBF7', fontWeight: 500, letterSpacing: '-0.01em', lineHeight: 1.3, margin: 0 }}>
+                {/* Title and tag stacked on mobile via flexDirection column */}
+                <div style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '4px',
+                  marginBottom: '5px',
+                }}>
+                  <h4 style={{
+                    fontFamily: 'serif',
+                    fontSize: 'clamp(11px,1.8vw,15px)',
+                    color: '#FDFBF7',
+                    fontWeight: 500,
+                    letterSpacing: '-0.01em',
+                    lineHeight: 1.3,
+                    margin: 0,
+                  }}>
                     {row.step.t}
                   </h4>
-                  <span style={{ fontFamily: 'monospace', fontSize: '7px', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#B89B5E', border: '1px solid #1E293B', padding: '3px 8px', borderRadius: '2px', backgroundColor: '#080D19', flexShrink: 0, whiteSpace: 'nowrap' }}>
+                  <span style={{
+                    fontFamily: 'monospace',
+                    fontSize: 'clamp(6px,1vw,7px)',
+                    letterSpacing: '0.1em',
+                    textTransform: 'uppercase',
+                    color: '#B89B5E',
+                    border: '1px solid #1E293B',
+                    padding: '2px 5px',
+                    borderRadius: '2px',
+                    backgroundColor: '#080D19',
+                    alignSelf: 'flex-start',
+                    whiteSpace: 'nowrap',
+                  }}>
                     {row.step.tag}
                   </span>
                 </div>
-                <p style={{ fontSize: '12px', color: '#64748B', lineHeight: 1.7, fontWeight: 300, margin: 0 }}>
+                <p style={{
+                  fontSize: 'clamp(10px,1.4vw,12px)',
+                  color: '#64748B',
+                  lineHeight: 1.6,
+                  fontWeight: 300,
+                  margin: 0,
+                }}>
                   {row.step.d}
                 </p>
               </div>
             </div>
           </div>
 
-          {/* ── Red flag cell ──
-              CHANGE 3: added display flex + flexDirection column so cell fills row height */}
+          {/* ── Red flag cell ── */}
           <div
             key={`flag-${i}`}
             className="group"
             style={{
               backgroundColor: '#120808',
               borderBottom: '1px solid #2a1010',
-              padding: '24px 40px',
+              padding: 'clamp(12px,2.5vw,24px) clamp(10px,3vw,40px)',
               position: 'relative',
               overflow: 'hidden',
               cursor: 'crosshair',
@@ -296,19 +423,47 @@ export default function InvestmentPortal() {
             {/* Sweep line */}
             <div className="absolute top-0 left-0 w-0 h-[1px] bg-gradient-to-r from-[#8A2525] to-transparent group-hover:w-full transition-all duration-700 ease-out" />
 
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-              <span style={{ fontFamily: 'monospace', fontSize: '7px', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#3d1515' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+              <span style={{
+                fontFamily: 'monospace',
+                fontSize: 'clamp(6px,1vw,7px)',
+                letterSpacing: '0.2em',
+                textTransform: 'uppercase',
+                color: '#3d1515',
+              }}>
                 RF_{String(i + 1).padStart(2, '0')}
               </span>
-              <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ fontFamily: 'monospace', fontSize: '7px', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#8A2525' }}>
+              <span
+                className="opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                style={{
+                  fontFamily: 'monospace',
+                  fontSize: 'clamp(6px,1vw,7px)',
+                  letterSpacing: '0.15em',
+                  textTransform: 'uppercase',
+                  color: '#8A2525',
+                }}
+              >
                 Halt Transaction
               </span>
             </div>
 
-            <h4 style={{ fontFamily: 'serif', fontSize: '15px', color: '#e8d0d0', fontWeight: 300, lineHeight: 1.3, marginBottom: '6px' }}>
+            <h4 style={{
+              fontFamily: 'serif',
+              fontSize: 'clamp(11px,1.8vw,15px)',
+              color: '#e8d0d0',
+              fontWeight: 300,
+              lineHeight: 1.3,
+              marginBottom: '5px',
+            }}>
               {row.flag.t}
             </h4>
-            <p style={{ fontSize: '12px', color: '#6b4040', lineHeight: 1.7, fontWeight: 300, margin: 0 }}>
+            <p style={{
+              fontSize: 'clamp(10px,1.4vw,12px)',
+              color: '#6b4040',
+              lineHeight: 1.6,
+              fontWeight: 300,
+              margin: 0,
+            }}>
               {row.flag.d}
             </p>
           </div>
