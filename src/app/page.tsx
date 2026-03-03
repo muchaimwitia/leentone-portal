@@ -30,7 +30,7 @@ const NAV_STEPS = [
 function StepNav({ step, goToStep, triggerHaptic }: {
   step: number;
   goToStep: (s: number) => void;
-  triggerHaptic: (p: any) => void;
+  triggerHaptic: (p: number | number[]) => void;
 }) {
   const prev = NAV_STEPS.find(x => x.s === step - 1);
   const next = NAV_STEPS.find(x => x.s === step + 1);
