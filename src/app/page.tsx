@@ -82,7 +82,7 @@ export default function InvestmentPortal() {
             </motion.div>
 
             <div className={`flex flex-col transition-all duration-700 ${isScrolled ? 'items-start justify-center' : 'items-center'}`}>
-              <div className={`font-serif tracking-[0.05em] text-[#FDFBF7] leading-none transition-all duration-700 ${isScrolled ? 'text-[18px] hidden sm:block' : 'text-[34px]'}`}>
+              <div className={`font-serif tracking-[0.05em] text-[#FDFBF7] leading-none transition-all duration-700 text-center w-full ${isScrolled ? 'text-[18px] hidden sm:block' : 'text-[34px]'}`}>
                 Leentone Solutions
               </div>
               <div className={`font-mono text-[10px] tracking-[0.8em] uppercase text-[#B89B5E] ml-[0.8em] transition-all duration-[600ms] overflow-hidden ${isScrolled ? 'max-h-0 opacity-0 mt-0' : 'max-h-[40px] opacity-90 mt-[40px]'}`}>
@@ -153,13 +153,14 @@ export default function InvestmentPortal() {
       {/* ── MOBILE DROPDOWN MENU ── */}
       <AnimatePresence>
         {mobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -12 }}
-            transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
-            className="md:hidden fixed top-[60px] left-0 right-0 z-[490] bg-[#080D19]/95 backdrop-blur-[16px] border-b border-[#1E293B]"
-          >
+         <motion.div
+  initial={{ opacity: 0, y: -12 }}
+  animate={{ opacity: 1, y: 0 }}
+  exit={{ opacity: 0, y: -12 }}
+  transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+  className="md:hidden fixed top-[60px] left-0 right-0 z-[9998] bg-[#080D19] border-b border-[#1E293B] overflow-y-auto"
+  style={{ maxHeight: 'calc(100vh - 60px)' }}
+>
             <nav className="flex flex-col w-full">
               {NAV_ITEMS.map((item, i) => (
                 <motion.button
