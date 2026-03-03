@@ -127,130 +127,209 @@ export default function InvestmentPortal() {
         <AnimatePresence mode="wait">
           
           {step === 1 && (
-            <motion.section key="s1" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-              
-              <div className="relative w-full min-h-[60vh] md:min-h-[70vh] flex items-center justify-center pt-[40px] md:pt-[60px] pb-[60px] md:pb-[80px] mb-[60px] md:mb-[120px] overflow-hidden bg-[#080D19]">
-                <div className="absolute inset-0 z-[1] pointer-events-none">
-                  <motion.div 
-                    initial={{ scale: 1.1, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 0.4 }}
-                    transition={{ duration: 2.5, ease: "easeOut" }}
-                    className="w-full h-full"
-                  >
-                    <img src="/skyline.jpg" alt="Nairobi" className="w-full h-full object-cover object-center" />
-                  </motion.div>
-                </div>
+  <motion.section key="s1" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
 
-                <div className="absolute inset-0 z-[2] pointer-events-none bg-gradient-to-b from-[#080D19] via-transparent to-[#080D19]"></div>
-                <div className="absolute inset-0 z-[2] pointer-events-none bg-[#080D19]/30"></div>
+    {/* ── HERO ── */}
+    <div className="relative w-full min-h-[60vh] md:min-h-[70vh] flex items-center justify-center pt-[40px] md:pt-[60px] pb-[60px] md:pb-[80px] mb-[60px] md:mb-[120px] overflow-hidden bg-[#080D19]">
+      <div className="absolute inset-0 z-[1] pointer-events-none">
+        <motion.div
+          initial={{ scale: 1.1, opacity: 0 }}
+          animate={{ scale: 1, opacity: 0.4 }}
+          transition={{ duration: 2.5, ease: "easeOut" }}
+          className="w-full h-full"
+        >
+          <img src="/skyline.jpg" alt="Nairobi" className="w-full h-full object-cover object-center" />
+        </motion.div>
+      </div>
+      <div className="absolute inset-0 z-[2] pointer-events-none bg-gradient-to-b from-[#080D19] via-transparent to-[#080D19]" />
+      <div className="absolute inset-0 z-[2] pointer-events-none bg-[#080D19]/30" />
+      <div className="relative z-[10] max-w-[1100px] w-full px-[24px] md:px-[40px] text-center">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.5 }}>
+          <p className="font-mono text-[9px] md:text-[10px] tracking-[0.5em] uppercase text-[#B89B5E] mb-[20px] md:mb-[24px]">Private Institutional Path</p>
+          <h1 className="font-serif text-[clamp(32px,6vw,84px)] font-light leading-[1.1] text-[#FDFBF7] tracking-[-0.02em] mb-[24px] md:mb-[32px]">
+            Luxury Real Estate Acquisition
+          </h1>
+          <p className="text-[13px] md:text-[16px] text-[#94A3B8] max-w-[750px] mx-auto leading-[1.8] font-light">
+            Purchasing a built or off-plan property — apartment, penthouse, or villa — involves distinct legal,
+            structural, and management due diligence steps beyond a standard title search.
+          </p>
+        </motion.div>
+      </div>
+    </div>
 
-                <div className="relative z-[10] max-w-[1100px] w-full px-[24px] md:px-[40px] text-center">
-                  <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, delay: 0.5 }}>
-                    <p className="font-mono text-[9px] md:text-[10px] tracking-[0.5em] uppercase text-[#B89B5E] mb-[20px] md:mb-[24px]">Private Institutional Path</p>
-                    <h1 className="font-serif text-[clamp(32px,6vw,84px)] font-light leading-[1.1] text-[#FDFBF7] tracking-[-0.02em] mb-[24px] md:mb-[32px]">
-                      Luxury Real Estate Acquisition
-                    </h1>
-                    <p className="text-[13px] md:text-[16px] text-[#94A3B8] max-w-[750px] mx-auto leading-[1.8] font-light">
-                      Purchasing a built or off-plan property — apartment, penthouse, or villa — involves distinct legal, structural, and management due diligence steps beyond a standard title search.
-                    </p>
-                  </motion.div>
+    {/* ══════════════════════════════════════════════════
+        COMPARISON TABLE — forced 2-col grid, no wrapping
+    ══════════════════════════════════════════════════ */}
+    {/* ↓ CHANGE 1: alignItems 'start' → 'stretch' so both cells in every row match height */}
+    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', width: '100%', alignItems: 'stretch' }}>
+
+      {/* ── LEFT HEADER: Legal ── */}
+      <div style={{ backgroundColor: '#0d1526', borderBottom: '1px solid #1E293B', borderRight: '1px solid #1E293B', padding: '32px 40px 24px' }}>
+        <p style={{ fontFamily: 'monospace', fontSize: '9px', letterSpacing: '0.4em', textTransform: 'uppercase', color: '#B89B5E', marginBottom: '8px' }}>
+          The Legal Protocol
+        </p>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+          <h2 style={{ fontFamily: 'serif', fontSize: 'clamp(18px,2vw,28px)', color: '#FDFBF7', fontWeight: 300, letterSpacing: '-0.02em', lineHeight: 1.2, margin: 0 }}>
+            08 Mandatory Steps
+          </h2>
+          <span style={{ fontFamily: 'monospace', fontSize: '8px', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#B89B5E', border: '1px solid #1E293B', padding: '4px 10px', borderRadius: '2px', backgroundColor: '#080D19', whiteSpace: 'nowrap', marginLeft: '12px' }}>
+            Kenya Law
+          </span>
+        </div>
+      </div>
+
+      {/* ── RIGHT HEADER: Red Flags ── */}
+      <div style={{ backgroundColor: '#100808', borderBottom: '1px solid #2a1010', padding: '32px 40px 24px' }}>
+        <p style={{ fontFamily: 'monospace', fontSize: '9px', letterSpacing: '0.4em', textTransform: 'uppercase', color: '#8A2525', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <span style={{ width: '6px', height: '6px', backgroundColor: '#8A2525', borderRadius: '50%', display: 'inline-block', animation: 'pulse 2s infinite' }} />
+          Classified Advisory
+        </p>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+          <h2 style={{ fontFamily: 'serif', fontSize: 'clamp(18px,2vw,28px)', color: '#FDFBF7', fontWeight: 300, letterSpacing: '-0.02em', lineHeight: 1.2, margin: 0 }}>
+            Immediate Red Flags
+          </h2>
+          <span style={{ fontFamily: 'monospace', fontSize: '8px', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#8A2525', border: '1px solid #2a1010', padding: '4px 10px', borderRadius: '2px', backgroundColor: '#0d0404', whiteSpace: 'nowrap', marginLeft: '12px' }}>
+            08 Risks
+          </span>
+        </div>
+      </div>
+
+      {[
+        {
+          step: { n: '01', t: 'Verify Title via Ardhisasa',         d: 'Run a title search on Ardhisasa (Ministry of Lands). For apartments, confirm a registered Sectional Title under the Sectional Properties Act 2020.',                             tag: 'Sectional Properties Act 2020' },
+          flag: { t: 'Allotment Letters Only',         d: 'Agreements for sale or allotment letters do not constitute legal ownership under Kenyan law. Insist on a fully registered Sectional Title deed before proceeding.' },
+        },
+        {
+          step: { n: '02', t: 'Engage Conveyancing Advocate',       d: 'Appoint an LSK-registered advocate specialising in residential conveyancing. Fees are regulated (typically 1.25%).',                                                              tag: 'Law Society of Kenya'          },
+          flag: { t: 'Missing Occupation Certificate', d: 'A building without a valid OC from the county government is illegal to occupy and unmortgageable. Never release final payment before the OC is in hand.'         },
+        },
+        {
+          step: { n: '03', t: 'Execute Sale Agreement (SPA)',        d: "Review the SPA for unit specifics, parking, and completion clauses. A 10% deposit must be held in the advocate's regulated client account.",                                      tag: 'Advocates Accounts Rules'      },
+          flag: { t: 'Undisclosed Service Charges',    d: 'Hidden monthly fees of KES 50,000–200,000+ dramatically alter the true cost of ownership and rental yield. Demand a full written breakdown before signing.'       },
+        },
+        {
+          step: { n: '04', t: 'Obtain Occupation Certificate (OC)', d: 'Demand the Occupation Certificate issued by the County Government confirming habitability. Never release final payment without it.',                                               tag: 'Physical Planning Act 2019'    },
+          flag: { t: 'Encumbered Title Record',        d: 'If the Ardhisasa search reveals a bank charge or existing mortgage, the unit cannot be transferred cleanly until these are formally discharged in writing.'       },
+        },
+        {
+          step: { n: '05', t: 'Structural & Snagging Inspection',   d: 'Hire an independent structural engineer and quantity surveyor. Request a full snagging report cataloguing all defects before completion.',                                        tag: 'Engineers Board of Kenya'      },
+          flag: { t: 'No Established Reserve Fund',    d: 'A luxury development without a properly constituted management company, audited accounts, and funded reserve account is a serious long-term liability.'           },
+        },
+        {
+          step: { n: '06', t: 'Review Management & By-Laws',        d: 'Audit the management company under the Sectional Properties Act. Review service charge schedules, reserve fund balance, and sub-letting rules.',                                  tag: 'Management Audit'              },
+          flag: { t: 'Plan Deviations',                d: 'Physically measure the unit against the registered floor plan. Discrepancies over 5% may indicate illegal subdivisions or encroachment into common areas.'        },
+        },
+        {
+          step: { n: '07', t: 'Clearance & Stamp Duty',             d: 'Obtain Land Rent, Land Rates, and Service Charge Clearance Certificates. Settle Stamp Duty at 4% via KRA iTax. Allow 3–6 weeks for government valuation.',                       tag: 'Stamp Duty Act · KRA iTax'     },
+          flag: { t: 'Identity Discrepancies',         d: "The registered owner's full name and national ID must exactly match the seller's government-issued ID. Any discrepancy — even minor — is a fraud signal."        },
+        },
+        {
+          step: { n: '08', t: 'Lodge Transfer of Title',            d: "Lodge the Transfer Instrument with the original title and clearances. The Registrar cancels the seller's title and issues a new Sectional Title in your name.",                   tag: 'Land Registration Act 2012'    },
+          flag: { t: 'Unlicensed Intermediaries',      d: 'An agent without an active EARB licence is illegal under Kenyan law and offers zero regulatory recourse. Verify on the EARB portal before any engagement.'       },
+        },
+      ].map((row, i) => (
+        <>
+          {/* ── Step cell ──
+              CHANGE 2: added display flex + flexDirection column so cell fills row height */}
+          <div
+            key={`step-${i}`}
+            onMouseEnter={() => setActiveStepHover(i)}
+            onMouseLeave={() => setActiveStepHover(null)}
+            style={{
+              backgroundColor: activeStepHover === i ? '#162038' : '#0f1829',
+              borderBottom: '1px solid #1E293B',
+              borderRight: '1px solid #1E293B',
+              padding: '24px 40px',
+              transition: 'background-color 0.4s ease',
+              position: 'relative',
+              overflow: 'hidden',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+            }}
+          >
+            {/* Ghost number */}
+            <div style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', fontFamily: 'serif', fontSize: '80px', color: '#FDFBF7', opacity: 0.025, userSelect: 'none', pointerEvents: 'none', fontStyle: 'italic', lineHeight: 1 }}>
+              {row.step.n}
+            </div>
+
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px', position: 'relative', zIndex: 1 }}>
+              <span style={{ fontFamily: 'serif', fontSize: '28px', lineHeight: 1, color: activeStepHover === i ? '#B89B5E' : '#2a3a5c', flexShrink: 0, transition: 'color 0.4s ease', marginTop: '2px' }}>
+                {row.step.n}
+              </span>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '8px', marginBottom: '6px' }}>
+                  <h4 style={{ fontFamily: 'serif', fontSize: '15px', color: '#FDFBF7', fontWeight: 500, letterSpacing: '-0.01em', lineHeight: 1.3, margin: 0 }}>
+                    {row.step.t}
+                  </h4>
+                  <span style={{ fontFamily: 'monospace', fontSize: '7px', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#B89B5E', border: '1px solid #1E293B', padding: '3px 8px', borderRadius: '2px', backgroundColor: '#080D19', flexShrink: 0, whiteSpace: 'nowrap' }}>
+                    {row.step.tag}
+                  </span>
                 </div>
+                <p style={{ fontSize: '12px', color: '#64748B', lineHeight: 1.7, fontWeight: 300, margin: 0 }}>
+                  {row.step.d}
+                </p>
               </div>
+            </div>
+          </div>
 
-              <div className="max-w-[1200px] mx-auto px-[24px] md:px-[40px] mb-[80px] md:mb-[120px]">
-                <div className="mb-8 md:mb-10 flex justify-between items-end border-b border-[#1E293B] pb-4">
-                  <h2 className="font-serif text-[20px] md:text-[32px] text-[#FDFBF7] font-light tracking-tight">The Legal Acquisition Process through Leentone</h2>
-                  <p className="font-mono text-[9px] tracking-[0.3em] uppercase text-[#B89B5E] hidden md:block">08 Mandatory Steps</p>
-                </div>
-                
-                <div className="relative group/list flex flex-col gap-[4px]">
-                  {[
-                    { n: '01', t: 'Verify Title via Ardhisasa', d: 'Run a title search on Ardhisasa (Ministry of Lands). For apartments, confirm a registered Sectional Title under the Sectional Properties Act 2020.', tag: 'Sectional Properties Act 2020' },
-                    { n: '02', t: 'Engage Conveyancing Advocate', d: 'Appoint an LSK-registered advocate specialising in residential conveyancing. Fees are regulated (typically 1.25%).', tag: 'Law Society of Kenya' },
-                    { n: '03', t: 'Execute Sale Agreement (SPA)', d: 'Review the SPA for unit specifics, parking, and completion clauses. A 10% deposit must be held in the advocate\'s regulated client account.', tag: 'Advocates Accounts Rules' },
-                    { n: '04', t: 'Obtain Occupation Certificate (OC)', d: 'Demand the Occupation Certificate issued by the County Government confirming habitability.', tag: 'Physical Planning Act 2019' },
-                    { n: '05', t: 'Structural & Snagging Inspection', d: 'Hire an independent structural engineer and quantity surveyor. Request a snagging report cataloguing defects.', tag: 'Engineers Board of Kenya' },
-                    { n: '06', t: 'Review Management & By-Laws', d: 'Audit the management company under the Sectional Properties Act. Review service charge schedules.', tag: 'Management Audit' },
-                    { n: '07', t: 'Clearance & Stamp Duty', d: 'Obtain Land Rent, Land Rates, and Service Charge Clearance Certificates. Settle Stamp Duty at 4%.', tag: 'Stamp Duty Act · KRA iTax' },
-                    { n: '08', t: 'Lodge Transfer of Title', d: 'Lodge the Transfer Instrument with the original title and clearances. The Registrar issues a new Sectional Title.', tag: 'Land Registration Act 2012' }
-                  ].map((item, index) => (
-                    <div 
-                      key={item.n} 
-                      onMouseEnter={() => setActiveStepHover(index)}
-                      onMouseLeave={() => setActiveStepHover(null)}
-                      className={`relative p-[16px] md:p-[28px] bg-[#121A2F] border border-[#1E293B] flex flex-col md:flex-row gap-[12px] md:gap-[24px] items-start transition-all duration-[600ms] ease-[cubic-bezier(0.33,1,0.68,1)] overflow-hidden rounded-[2px]
-                        ${activeStepHover !== null && activeStepHover !== index ? 'opacity-30 blur-[4px] scale-[0.99]' : 'opacity-100 scale-100 luxury-shadow z-10 hover:bg-[#162038] hover:border-[#B89B5E]'}
-                      `}
-                    >
-                      <div className="absolute left-[-10px] md:left-4 top-1/2 -translate-y-1/2 font-serif text-[50px] md:text-[120px] text-[#FDFBF7] opacity-[0.02] select-none pointer-events-none italic transition-transform duration-1000 group-hover:translate-x-4">
-                        {item.n}
-                      </div>
-                      <div className="md:w-[10%] pt-1 z-10">
-                         <span className={`font-serif text-[20px] md:text-[32px] leading-none transition-colors duration-500 ${activeStepHover === index ? 'text-[#B89B5E]' : 'text-[#94A3B8]'}`}>
-                           {item.n}
-                         </span>
-                      </div>
-                      <div className="w-full md:w-[65%] z-10">
-                         <h4 className="font-serif text-[16px] md:text-[20px] text-[#FDFBF7] mb-1 md:mb-2 font-medium tracking-tight">{item.t}</h4>
-                         <p className="text-[12px] md:text-[13px] text-[#94A3B8] leading-[1.6] font-light">{item.d}</p>
-                      </div>
-                      <div className="w-full md:w-[25%] flex justify-start md:justify-end mt-2 md:mt-0 z-10">
-                         <span className="font-mono text-[7px] md:text-[8px] tracking-[0.2em] text-[#B89B5E] uppercase border border-[#1E293B] px-2 md:px-3 py-1 md:py-1.5 rounded-[2px] bg-[#080D19]">
-                           {item.tag}
-                         </span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
+          {/* ── Red flag cell ──
+              CHANGE 3: added display flex + flexDirection column so cell fills row height */}
+          <div
+            key={`flag-${i}`}
+            className="group"
+            style={{
+              backgroundColor: '#120808',
+              borderBottom: '1px solid #2a1010',
+              padding: '24px 40px',
+              position: 'relative',
+              overflow: 'hidden',
+              cursor: 'crosshair',
+              transition: 'background-color 0.4s ease',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+            }}
+            onMouseEnter={e => (e.currentTarget.style.backgroundColor = '#1a0b0b')}
+            onMouseLeave={e => (e.currentTarget.style.backgroundColor = '#120808')}
+          >
+            {/* Sweep line */}
+            <div className="absolute top-0 left-0 w-0 h-[1px] bg-gradient-to-r from-[#8A2525] to-transparent group-hover:w-full transition-all duration-700 ease-out" />
 
-              <div className="bg-[#03060C] py-[60px] md:py-[100px] px-[24px] md:px-[40px] relative overflow-hidden text-[#FDFBF7] border-y border-[#1E293B]">
-                <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'linear-gradient(#1E293B 1px, transparent 1px), linear-gradient(90deg, #1E293B 1px, transparent 1px)', backgroundSize: '40px 40px' }}></div>
-                <div className="max-w-[1200px] mx-auto relative z-10">
-                  <div className="mb-[40px] md:mb-[80px] flex flex-col md:flex-row justify-between items-start md:items-end border-b border-[#1E293B] pb-6 md:pb-8 gap-4 md:gap-6">
-                    <div>
-                      <p className="font-mono text-[8px] md:text-[9px] tracking-[0.4em] uppercase text-[#B89B5E] mb-[12px] md:mb-[16px] flex items-center gap-2 md:gap-3">
-                        <span className="w-1.5 h-1.5 md:w-2 md:h-2 bg-[#8A2525] rounded-full animate-pulse"></span> Classified Advisory
-                      </p>
-                      <h2 className="font-serif text-[24px] md:text-[40px] text-[#FDFBF7] font-light tracking-tight leading-tight">Immediate Red Flags</h2>
-                    </div>
-                    <p className="text-[11px] md:text-[13px] text-[#94A3B8] font-mono uppercase tracking-[0.1em] max-w-[300px] text-left md:text-right">
-                      Identification of these warrants an immediate halt to capital deployment.
-                    </p>
-                  </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+              <span style={{ fontFamily: 'monospace', fontSize: '7px', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#3d1515' }}>
+                RF_{String(i + 1).padStart(2, '0')}
+              </span>
+              <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ fontFamily: 'monospace', fontSize: '7px', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#8A2525' }}>
+                Halt Transaction
+              </span>
+            </div>
 
-                  <div className="columns-1 md:columns-2 gap-[16px] md:gap-[24px] space-y-[16px] md:space-y-[24px]">
-                    {[
-                      { t: 'Allotment Letters Only', d: 'Agreements for sale or allotment letters do not constitute legal ownership under Kenyan law.' },
-                      { t: 'Missing Occupation Certificate', d: 'A building without a valid OC from the county government is illegal to occupy.' },
-                      { t: 'Undisclosed Service Charges', d: 'Hidden monthly fees dramatically alter the true cost of ownership.' },
-                      { t: 'Encumbered Title Record', d: 'If the search reveals a bank charge, the unit cannot be transferred cleanly.' },
-                      { t: 'No Established Reserve Fund', d: 'A luxury development without audited accounts is a serious liability.' },
-                      { t: 'Plan Deviations', d: 'Physically measure the unit against the registered floor plan.' },
-                      { t: 'Identity Discrepancies', d: 'The registered owner\'s name must exactly match the seller\'s ID.' },
-                      { t: 'Unlicensed Intermediaries', d: 'An unlicensed agent offers zero regulatory recourse.' }
-                    ].map((item, i) => (
-                      <div key={i} className="break-inside-avoid relative group p-[20px] md:p-[32px] bg-[#080D19] border border-[#1E293B] hover:border-[#8A2525] hover:bg-[#0B0F1A] transition-all duration-500 cursor-crosshair rounded-[2px]">
-                        <div className="absolute top-0 left-0 w-0 h-[2px] bg-[#8A2525] group-hover:w-full transition-all duration-[800ms] ease-out shadow-[0_0_10px_#8A2525]"></div>
-                        <div className="flex justify-between items-start mb-3 md:mb-4">
-                          <span className="font-mono text-[8px] md:text-[9px] text-[#94A3B8] group-hover:text-[#B89B5E] transition-colors"> RED FLAG_{i+1}</span>
-                          <span className="text-[#8A2525] opacity-0 group-hover:opacity-100 transition-opacity font-mono text-[8px] md:text-[9px] tracking-widest uppercase">Critical Risk</span>
-                        </div>
-                        <h4 className="font-serif text-[16px] md:text-[20px] text-[#FDFBF7] mb-1 md:mb-2 font-light leading-tight group-hover:text-[#FDFBF7] transition-colors">{item.t}</h4>
-                        <p className="text-[11px] md:text-[13px] text-[#94A3B8] leading-[1.6] font-light transition-colors">{item.d}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
+            <h4 style={{ fontFamily: 'serif', fontSize: '15px', color: '#e8d0d0', fontWeight: 300, lineHeight: 1.3, marginBottom: '6px' }}>
+              {row.flag.t}
+            </h4>
+            <p style={{ fontSize: '12px', color: '#6b4040', lineHeight: 1.7, fontWeight: 300, margin: 0 }}>
+              {row.flag.d}
+            </p>
+          </div>
+        </>
+      ))}
 
-              <div className="flex justify-center pt-[40px] md:pt-[60px] pb-[40px]">
-                 <MagneticButton onClick={() => goToStep(2)} className="w-full md:w-auto px-[30px] md:px-[50px] py-[16px] md:py-[20px] bg-[#FDFBF7] text-[#080D19] rounded-[2px] font-mono text-[9px] md:text-[10px] tracking-[0.4em] uppercase hover:bg-[#B89B5E] hover:text-[#FDFBF7] transition-colors duration-500 shadow-xl">
-                    Enter Portfolio Collection
-                 </MagneticButton>
-              </div>
-            </motion.section>
-          )}
+    </div>
+    {/* end comparison grid */}
+
+    {/* ── CTA ── */}
+    <div className="flex justify-center pt-[40px] md:pt-[60px] pb-[40px] bg-[#080D19] border-t border-[#1E293B]">
+      <MagneticButton
+        onClick={() => goToStep(2)}
+        className="w-full md:w-auto px-[30px] md:px-[50px] py-[16px] md:py-[20px] bg-[#FDFBF7] text-[#080D19] rounded-[2px] font-mono text-[9px] md:text-[10px] tracking-[0.4em] uppercase hover:bg-[#B89B5E] hover:text-[#FDFBF7] transition-colors duration-500 shadow-xl"
+      >
+        Enter Portfolio Collection
+      </MagneticButton>
+    </div>
+
+  </motion.section>
+)}
 
           {step === 2 && (
             <motion.section key="s2" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={luxuryTransition} className="max-w-[1200px] mx-auto px-[24px] md:px-[40px]">
